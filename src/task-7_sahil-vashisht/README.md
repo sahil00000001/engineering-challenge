@@ -12,7 +12,7 @@ Design configuration ────┘        (refuse, don't render)      (text on
                                                                                 list)  visual-validation report
 ```
 
-- Live showcase of every example render and report: **<!-- LIVE_URL -->**. This is a static
+- Live showcase of every example render and report: **[task-7-insight-template.vercel.app](https://task-7-insight-template.vercel.app)**. This is a static
   view of the committed `examples/` folder. The challenge does not ask for it, and the
   renderer does not need it.
 - Rendered example: [`examples/normal/insight.png`](examples/normal/insight.png) and
