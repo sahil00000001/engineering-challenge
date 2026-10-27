@@ -1,0 +1,37 @@
+name: task-7 cross-platform check
+
+on:
+  push:
+    branches: [ci/task-7-cross-platform]
+  workflow_dispatch:
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: src/task-7_sahil-vashisht
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run typecheck
+      - run: npm test
+      - name: Re-render examples and compare validation results with the committed ones
+        shell: bash
+        run: |
+          cp examples/index.json /tmp/committed-index.json
+          npm run examples
+          node -e "
+            const a = require('/tmp/committed-index.json'), b = require('./examples/index.json');
+            const pick = (x) => x.map(({ fixture, status, checks, failure_codes }) => ({ fixture, status, checks, failure_codes }));
+            if (JSON.stringify(pick(a)) !== JSON.stringify(pick(b))) { console.error('Validation results differ from the committed examples'); process.exit(1); }
+            console.log('Validation results match the committed examples on', process.platform);
+          "
