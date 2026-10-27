@@ -27,10 +27,10 @@ jobs:
       - name: Re-render examples and compare validation results with the committed ones
         shell: bash
         run: |
-          cp examples/index.json /tmp/committed-index.json
+          cp examples/index.json "$RUNNER_TEMP/committed-index.json"
           npm run examples
           node -e "
-            const a = require('/tmp/committed-index.json'), b = require('./examples/index.json');
+            const a = require(require('path').join(process.env.RUNNER_TEMP, 'committed-index.json')), b = require('./examples/index.json');
             const pick = (x) => x.map(({ fixture, status, checks, failure_codes }) => ({ fixture, status, checks, failure_codes }));
             if (JSON.stringify(pick(a)) !== JSON.stringify(pick(b))) { console.error('Validation results differ from the committed examples'); process.exit(1); }
             console.log('Validation results match the committed examples on', process.platform);
