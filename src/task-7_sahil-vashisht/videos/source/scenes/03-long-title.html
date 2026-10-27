@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>03 — Too long is a finding</title>
+<link rel="stylesheet" href="../brand.css">
+<link rel="stylesheet" href="../kit.css">
+<link rel="stylesheet" href="../film.css">
+<style>
+  #hook { position: absolute; left: 120px; top: 300px; width: 900px; z-index: 46; }
+  #hook .h1 { font-size: 112px; line-height: .96; }
+  #fixes { position: absolute; left: 1080px; top: 270px; width: 720px; z-index: 22; }
+  .fix { position: relative; padding: 26px 30px; margin-bottom: 18px; border-radius: 20px;
+    background: rgba(255,255,255,.035); border: 1px solid var(--line); font-size: 32px; font-weight: 600; will-change: transform, opacity; }
+  .fix small { display: block; font-family: var(--font-code); font-size: 18px; color: var(--mut); margin-top: 6px; font-weight: 500; }
+  .fix .strike { position: absolute; left: 24px; right: 24px; top: 50%; height: 4px; border-radius: 4px; background: var(--bad); transform-origin: left center; }
+  .fix .x { position: absolute; right: 26px; top: 50%; margin-top: -24px; width: 48px; height: 48px; border-radius: 50%;
+    display: grid; place-items: center; color: var(--bad); font-size: 26px; font-weight: 700; background: color-mix(in srgb, var(--bad) 16%, transparent); }
+
+  /* the measured title: 1.25x the real template (46/52 px over 804 px) so it wraps identically */
+  #measure { position: absolute; left: 120px; top: 170px; width: 1160px; height: 520px; z-index: 20; }
+  #ruler { position: absolute; left: 0; top: 30px; width: 70px; }
+  .tickl { position: absolute; left: 0; width: 70px; height: 65px; display: flex; align-items: center; gap: 12px;
+    font-family: var(--font-code); font-size: 22px; font-weight: 700; color: var(--accent); }
+  .tickl i { flex: 1; height: 2px; background: currentColor; opacity: .5; }
+  .tickl.over { color: var(--bad); }
+  #region { position: absolute; left: 86px; top: 22px; width: 1045px; height: 211px; border-radius: 14px;
+    border: 2px solid var(--accent); background: color-mix(in srgb, var(--accent) 5%, transparent); }
+  #overzone { position: absolute; left: 86px; top: 225px; width: 1045px; height: 211px; border-radius: 14px;
+    border: 2px dashed var(--bad); background: color-mix(in srgb, var(--bad) 8%, transparent); }
+  #limit { position: absolute; left: 86px; top: 225px; width: 1045px; height: 0; border-top: 3px dashed var(--accent); }
+  #limitlab { position: absolute; left: 90px; top: -16px; font-family: var(--font-code); font-size: 18px; font-weight: 700; color: var(--accent); letter-spacing: .06em; }
+  .ttl { position: absolute; left: 106px; top: 30px; width: 1005px;
+    font-size: 57.5px; line-height: 65px; font-weight: 700; letter-spacing: -.02em; color: var(--txt); }
+  .ttl.red { color: var(--bad); }
+
+  #gauges { position: absolute; left: 1330px; top: 190px; width: 470px; z-index: 22; }
+  .g { padding: 18px 0 16px; border-top: 1px solid var(--line); }
+  .g .lab { font-size: 16px; }
+  .g .v { font-size: 64px; font-weight: 700; letter-spacing: -.03em; line-height: 1.05; margin-top: 4px; }
+  .g .v small { font-size: 26px; color: var(--mut); font-weight: 500; letter-spacing: 0; }
+  #verdict { position: absolute; left: 1330px; top: 690px; z-index: 30; }
+
+  /* failed png */
+  .zone { position: absolute; border-radius: 6px; z-index: 22; }
+  .zone .zl { position: absolute; left: calc(100% + 12px); top: 50%; transform: translateY(-50%); white-space: nowrap; font-family: var(--font-code); font-size: 15px; font-weight: 700; padding: 3px 8px; border-radius: 6px; }
+  #files { position: absolute; left: 1230px; top: 200px; width: 570px; z-index: 24; }
+  .file { display: flex; align-items: center; gap: 18px; padding: 20px 24px; margin-bottom: 16px; border-radius: 18px;
+    background: var(--ink-1); border: 1px solid var(--line); will-change: transform, opacity; }
+  .file .ic { flex: none; width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; font-size: 24px; font-weight: 700; }
+  .file b { display: block; font-family: var(--font-code); font-size: 23px; }
+  .file span { display: block; font-size: 18px; color: var(--mut); margin-top: 4px; }
+  .file.ok .ic { color: var(--accent-ink); background: var(--accent); }
+  .file.no .ic { color: var(--bad); background: color-mix(in srgb, var(--bad) 16%, transparent); }
+  .file.no b { color: var(--mut); text-decoration: line-through; text-decoration-color: var(--bad); text-decoration-thickness: 3px; }
+</style>
+</head>
+<body>
+<div id="fit"><div id="stage">
+
+  <div id="hook">
+    <div class="kick rv" style="margin-bottom:28px"><i>Required check 2 · long title</i></div>
+    <div class="h1">
+      <span class="rv"><i>Some titles</i></span>
+      <span class="rv"><i class="acc">don't fit.</i></span>
+    </div>
+  </div>
+  <div id="fixes"></div>
+
+  <div id="measure">
+    <div id="ruler"></div>
+    <div id="overzone"></div>
+    <div id="region"></div>
+    <div id="limit"></div>
+    <div id="limitlab">title region · title_max_lines = 3 · 156 px</div>
+    <div class="ttl" id="ttl"></div>
+    <div class="ttl red" id="ttlRed"></div>
+  </div>
+  <div id="gauges"></div>
+  <div id="verdict"></div>
+  <div id="files"></div>
+
+</div></div>
+
+<script src="../brand.js"></script>
+<script src="../kit.js"></script>
+<script src="../footage/site-layout.js"></script>
+<script src="../film.js"></script>
+<script>
+(() => {
+  const stage = document.getElementById('stage');
+  const { E, tr, lerp, set, lines, linesOut } = K;
+  const atmoEl = K.atmo(stage, [
+    { x: 160, y: 140, w: 860, c: 'color-mix(in srgb, var(--accent) 11%, transparent)' },
+    { x: 1150, y: 480, w: 760, c: 'color-mix(in srgb, var(--bad) 7%, transparent)' },
+  ]);
+  const series = F.series(stage, '03', 'Long title');
+  const D = F.DATA.longTitle;
+
+  /* ---- the usual fixes, each of which changes approved text ---- */
+  const FIXES = [
+    ['Shrink the font until it fits', 'the type scale quietly changes'],
+    ['Cut it off with an ellipsis…', 'the approved words disappear'],
+    ['Hide the overflow', 'the reader never sees the rest'],
+  ];
+  const fixEl = document.getElementById('fixes');
+  const fixes = FIXES.map(([a, b]) => F.el(fixEl, 'fix', a + '<small>' + b + '</small><span class="strike"></span><span class="x">✕</span>'));
+
+  /* ---- the real long title (fixtures/long-title.json) ---- */
+  const TITLE = 'Fictional Provider A opens a sovereign cloud region in Frankfurt with 42 managed services, EU-resident operations staff and a residency commitment that changes where regulated workloads can run';
+  const ttl = document.getElementById('ttl'), ttlRed = document.getElementById('ttlRed');
+  ttl.textContent = TITLE; ttlRed.textContent = TITLE;
+  const ruler = document.getElementById('ruler');
+  const ticks = [1, 2, 3, 4, 5, 6].map((n) => {
+    const d = F.el(ruler, 'tickl' + (n > 3 ? ' over' : ''), '<span>' + n + '</span><i></i>');
+    d.style.top = (n - 1) * 65 + 'px';
+    return d;
+  });
+  const measure = document.getElementById('measure');
+  const overzone = document.getElementById('overzone');
+  const limit = document.getElementById('limit'), limitlab = document.getElementById('limitlab');
+
+  const gauges = document.getElementById('gauges');
+  const G = [
+    ['lines needed', 'gl'], ['title region', 'gr'], ['content height', 'gc'], ['overflow', 'go'],
+  ].map(([lab, id]) => F.el(gauges, 'g', '<div class="lab">' + lab + '</div><div class="v" id="' + id + '"></div>'));
+  const gl = document.getElementById('gl'), gr = document.getElementById('gr'), gc = document.getElementById('gc'), go = document.getElementById('go');
+  gr.innerHTML = '156 <small>px · 3 lines</small>';
+  const verdict = F.el(document.getElementById('verdict'), 'verdict fail', '<span class="dotv"></span>TITLE_OVERFLOW');
+
+  /* ---- the real failed render, with the measured regions drawn on it ---- */
+  const SC = 1040 / 1200;
+  const png = F.shot(stage, F.ART('long-title', 'insight.failed.png'), { x: 120, y: 190, w: 1040,
+    label: '<b>✕</b> examples/long-title/insight.failed.png · kept for diagnosis' });
+  png.querySelector('.label').classList.add('bad');
+  const zoneRegion = F.el(png, 'zone', '<span class="zl" style="background:var(--accent);color:var(--accent-ink)">region · 3 lines</span>', {
+    left: 48 * SC + 'px', top: 48 * SC + 'px', width: 804 * SC + 'px', height: 156 * SC + 'px', border: '3px solid var(--accent)' });
+  const zoneOver = F.el(png, 'zone', '<span class="zl" style="background:var(--bad);color:#1a0302">overflow · +156 px</span>', {
+    left: 48 * SC + 'px', top: 204 * SC + 'px', width: 804 * SC + 'px', height: 156 * SC + 'px',
+    border: '3px dashed var(--bad)', background: 'color-mix(in srgb, var(--bad) 14%, transparent)' });
+  const FILES = [
+    ['ok', '✓', 'insight.failed.png', 'written, so the problem can be inspected'],
+    ['no', '✕', 'insight.png', 'never written for a failed render'],
+    ['ok', '✓', 'report.json', 'TITLE_OVERFLOW · 6 lines where at most 3 fit'],
+  ];
+  const filesEl = document.getElementById('files');
+  const files = FILES.map(([cls, ic, b, s]) => F.el(filesEl, 'file ' + cls, '<span class="ic">' + ic + '</span><div><b>' + b + '</b><span>' + s + '</span></div>'));
+
+  /* ---- live ---- */
+  const site = F.site(stage, { x: 560, y: 96, w: 800, h: 840 });
+  const openCard = site.openCard('long-title');
+  const cur = K.cursor(stage);
+
+  const sub = F.subs(stage, [
+    [0.6, 5.3, 'Check 2', 'A title too long for its region. The usual fixes quietly change the approved text.'],
+    [5.5, 10.4, 'Measure', 'The title region holds 3 lines (156 px). This approved title needs 6 lines (312 px).'],
+    [10.5, 12.8, 'Verdict', '<code>TITLE_OVERFLOW</code>: the report says what overflowed and by how much.'],
+    [13.0, 19.6, 'No silent output', 'The render is kept as <code>insight.failed.png</code> for diagnosis. <code>insight.png</code> is never written.'],
+    [19.8, 27.0, 'Live', 'Live: the long-title card shows <code>overflow: fail</code>. Every other check still passes.'],
+  ]);
+  const end = F.endcard(stage, 'Too long is a finding,<br><span class="acc">not a font size.</span>');
+
+  const hook = document.getElementById('hook');
+  const T = {
+    hook: 0.5, fixes: 1.3, strike: 2.7,
+    measure: 5.4, type0: 6.0, lineStep: 0.62,
+    verdict: 10.5, png: 13.0, files: 14.4, live: 19.8, endIn: 27.4,
+  };
+  T.click = T.live + 3.7;
+  const DUR = 32;
+  const K0 = { t: T.live + 0.3, x: 720, y: 2250, z: 0.5 };
+  const K1 = { t: T.live + 2.3, x: 314.5, y: 2353, z: 1.28 };
+  const S = window.SITE.boxes['summary:long-title'];
+  const aim = site.project(K1, S.x + 46, S.y + S.h / 2);
+  const PATH = [{ t: T.live + 2.4, x: 1500, y: 820 }, { t: T.click - 0.15, x: aim.x, y: aim.y, e: E.io4 }];
+
+  K.boot({
+    dur: DUR,
+    render(t) {
+      K.drift(atmoEl, t);
+      series.show(t);
+      sub(t);
+
+      /* hook: the fixes arrive, then each is struck out */
+      lines(hook, t, T.hook, { step: 0.12, d: 0.8 });
+      if (t > T.measure - 0.9) linesOut(hook, t, T.measure - 0.9, { step: 0.05, d: 0.4 });
+      set(hook, { o: 1 - tr(t, T.measure - 0.45, T.measure, E.lin) });
+      fixes.forEach((el, i) => {
+        const p = tr(t, T.fixes + i * 0.3, T.fixes + i * 0.3 + 0.6, E.out5);
+        set(el, { o: p * (1 - tr(t, T.measure - 0.6, T.measure - 0.1, E.lin)), x: lerp(50, 0, p) });
+        const s0 = T.strike + i * 0.45;
+        set(el.querySelector('.strike'), { sx: tr(t, s0, s0 + 0.35, E.out4) });
+        set(el.querySelector('.x'), { o: tr(t, s0 + 0.2, s0 + 0.35), s: lerp(1.8, 1, tr(t, s0 + 0.2, s0 + 0.7, E.spring)) });
+        el.style.color = t > s0 + 0.2 ? 'var(--mut)' : '';
+      });
+
+      /* the measurement: the title types in line by line and crosses the limit */
+      const mOut = tr(t, T.png - 0.6, T.png - 0.1, E.lin);
+      set(measure, { o: tr(t, T.measure, T.measure + 0.6) * (1 - mOut) });
+      let shown = 0;
+      for (let i = 0; i < 6; i++) shown += tr(t, T.type0 + i * T.lineStep, T.type0 + i * T.lineStep + 0.42, E.out5);
+      const h = shown * 65;
+      ttl.style.clipPath = 'inset(0 0 ' + Math.max(0, 390 - h) + 'px 0)';
+      ttlRed.style.clipPath = 'inset(195px 0 ' + Math.max(0, 390 - h) + 'px 0)';
+      set(ttlRed, { o: h > 195 ? 1 : 0 });
+      ticks.forEach((tk, i) => set(tk, { o: tr(t, T.type0 + i * T.lineStep, T.type0 + i * T.lineStep + 0.3) }));
+      const crossed = tr(t, T.type0 + 3 * T.lineStep, T.type0 + 3 * T.lineStep + 0.4);
+      set(overzone, { o: crossed });
+      set(limit, { o: tr(t, T.measure + 0.3, T.measure + 0.8) }); set(limitlab, { o: tr(t, T.measure + 0.4, T.measure + 0.9) });
+
+      set(gauges, { o: tr(t, T.measure + 0.2, T.measure + 0.8) * (1 - mOut), x: lerp(40, 0, tr(t, T.measure + 0.2, T.measure + 1.0, E.out5)) });
+      gl.innerHTML = Math.round(shown) + ' <small>/ ' + D.maxLines + ' max</small>';
+      gl.style.color = shown > 3.5 ? 'var(--bad)' : '';
+      gc.innerHTML = Math.round(shown * 52) + ' <small>px</small>';
+      const over = Math.max(0, shown - 3) * 52;
+      go.innerHTML = '+' + Math.round(over) + ' <small>px</small>';
+      go.style.color = over > 0 ? 'var(--bad)' : 'var(--mut)';
+      set(verdict, { o: tr(t, T.verdict, T.verdict + 0.15) * (1 - mOut), s: lerp(1.9, 1, tr(t, T.verdict, T.verdict + 0.6, E.spring)) });
+
+      /* the real failed render */
+      const pOut = tr(t, T.live - 0.6, T.live - 0.1, E.lin);
+      const pp = tr(t, T.png, T.png + 0.9, E.out5);
+      set(png, { o: pp * (1 - pOut), s: lerp(0.94, 1, pp) });
+      set(zoneRegion, { o: tr(t, T.png + 1.0, T.png + 1.4) });
+      set(zoneOver, { o: tr(t, T.png + 1.5, T.png + 1.9), s: lerp(1.06, 1, tr(t, T.png + 1.5, T.png + 2.1, E.spring)) });
+      files.forEach((f, i) => {
+        const p = tr(t, T.files + i * 0.6, T.files + i * 0.6 + 0.6, E.out5);
+        set(f, { o: p * (1 - pOut), x: lerp(50, 0, p) });
+      });
+
+      /* live */
+      site.show(t, T.live, T.endIn - 0.3);
+      site.cam(t, [K0, K1]);
+      openCard(t, T.click + 0.05);
+      const c = K.wayp(t, PATH);
+      set(cur, { x: c.x, y: c.y, o: tr(t, T.live + 2.3, T.live + 2.6) * (1 - tr(t, T.endIn - 1.0, T.endIn - 0.6, E.lin)) });
+      K.click(cur, t, [T.click]);
+
+      end.show(t, T.endIn);
+    },
+  });
+})();
+</script>
+</body>
+</html>

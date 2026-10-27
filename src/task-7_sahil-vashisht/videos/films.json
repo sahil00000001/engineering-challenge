@@ -1,0 +1,151 @@
+{
+  "campaign": {
+    "brandName": "Task 7 · single-insight-v1",
+    "title": "Approved text in. A validated image out.",
+    "eyebrow": "Task 7 · seven explainer films",
+    "standfirst": "Seven captioned 1920&#8202;&times;&#8202;1080 films that walk a reviewer through the Task 7 submission: one overview, then one film per required check. <em>Every number, render and screen in them comes from the repository or the live Vercel showcase.</em>",
+    "frame": "1920 &times; 1080 &middot; 30fps",
+    "codec": "H.264 &middot; CRF 19",
+    "url": "task-7-insight-template.vercel.app",
+    "fontsHref": "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap",
+    "thesis": {
+      "heading": "One film per check, so each one proves one thing.",
+      "paras": [
+        "The Task 7 brief names six required checks: normal content, long title, long body, missing field, HTML/script input and changed approved text. A single walkthrough would rush all six. So each check gets its own film, built around the one visual idea that makes it obvious, and an overview ties them together.",
+        "Each film follows the same order. First the problem, in the reviewer's terms. Then what the component does about it, shown with the real artefact. Then the evidence: the real report, the real render, the live showcase. The captions are burned in, so every film works muted."
+      ]
+    },
+    "spine": [
+      ["Problem", "What could go wrong between approval and image."],
+      ["Mechanism", "The component doing the thing: binding, measuring, refusing."],
+      ["Evidence", "The real render, the real report numbers, the real tests."],
+      ["Live", "The same result on the deployed Vercel showcase."],
+      ["Sign-off", "One line, the project name, the live URL."]
+    ],
+    "setHeading": "Seven films, seven proofs.",
+    "runOrder": [],
+    "runOrderNote": "Watch 01 first, then 02 to 07 in order: they follow the order of the required checks in the Task 7 brief.",
+    "signoff": {
+      "heading": "What to know before sharing these.",
+      "lede": "There are no testimonials, no quotes and no performance claims. Every figure on screen is copied from a committed <code>report.json</code> or from the test suite.",
+      "items": [
+        {
+          "title": "Synthetic content",
+          "body": "\"Fictional Provider A\" and \"Fictional Provider B\" are the synthetic fixtures' own placeholder names. No real company, event or press release appears."
+        },
+        {
+          "title": "One illustration",
+          "body": "Film 06's left pane (an alert dialog and two network requests) is an illustration of what unescaped markup could do. It is labelled \"Illustration\" on screen. Everything else is a real render, report or capture."
+        },
+        {
+          "title": "Atomity assets",
+          "body": "The Atomity logo and fonts appear only as the design assets supplied with the challenge, inside the renders and the showcase. Each film ends with a note that it is a candidate submission, not an official Atomity film."
+        }
+      ],
+      "real": {
+        "title": "Everything structural is real",
+        "body": "The renders are the committed <code>examples/*.png</code>. The check names, failure codes and measurements (6 / 3 lines, +156 px, +163.5 px, both SHA-256 digests) come from <code>examples/*/report.json</code>. The 16 missing-field cases and the negative controls are the actual tests. The site footage is a Chromium capture of the deployed showcase, made by <code>source/capture-footage.cjs</code>."
+      }
+    },
+    "handover": {
+      "heading": "Every film is one HTML file and a render command.",
+      "paras": [
+        "There are no CSS animations and no timers anywhere in a scene. A film is a pure function <code>render(t)</code> that fully describes the frame at time <code>t</code>. That makes the films frame-exact to capture and easy to retime: move a number in the <code>T</code> block at the foot of a scene, and that beat moves with it.",
+        "Shared furniture (captions, the series tag, the browser-frame camera, the sign-off) lives in <code>source/film.js</code> and <code>source/film.css</code>. Brand tokens come from <code>design/atomity.css</code>, and the fonts are referenced in place from <code>design/fonts</code>."
+      ]
+    }
+  },
+  "films": [
+    {
+      "n": "01",
+      "key": "01-overview",
+      "title": "Overview",
+      "hook": "Approved text should become an image exactly as approved.",
+      "audience": "A reviewer meeting the submission for the first time",
+      "module": "The whole pipeline",
+      "device": "A conveyor through the five real pipeline stations, then a camera tour of the live showcase",
+      "cta": "See the live showcase",
+      "treatment": "Three ways it goes wrong (<em>a long title gets cut with …</em>, <em>a number changes after approval</em>, <em>&lt;script&gt; in the copy runs</em>). A JSON card rides a conveyor through Contract, Bind, Render, Capture and Validate, and each station lights as it arrives. The card turns into the real normal render while the eight checks land as pass. Then the camera tours the deployed Vercel showcase.",
+      "beats": [["0.5", "hook and the three failure modes"], ["5.2", "the conveyor starts"], ["14.7", "the real render and its 8 passing checks"], ["19.6", "live showcase tour"], ["31.1", "sign-off"]],
+      "picks": [3.5, 9.5, 16.5]
+    },
+    {
+      "n": "02",
+      "key": "02-normal-content",
+      "title": "Normal content",
+      "hook": "Four slots. Four approved strings. Nothing added.",
+      "audience": "A reviewer verifying required check 1",
+      "module": "Required check 1 · normal content",
+      "device": "A dossier: each real fixture field flies into its slot on a wireframe of the template",
+      "cta": "See the live showcase",
+      "treatment": "The real <em>fixtures/normal.json</em> fields sit beside a wireframe of the template's measured regions. Title, body, source note and brand each fly into their slot. The wireframe becomes the real Chromium render. The eight checks land with their real measurements (<em>title 2 / 3 lines · body 204 of 312.5 px</em>). Two runs slide together and 0 pixels differ. On the live showcase, a cursor opens the normal card's checks.",
+      "beats": [["0.5", "hook"], ["5.9", "fields fly into slots"], ["10.0", "the real render"], ["12.8", "8 checks with measurements"], ["19.5", "determinism"], ["24.6", "live click"]],
+      "picks": [7.4, 16.5, 29.5]
+    },
+    {
+      "n": "03",
+      "key": "03-long-title",
+      "title": "Long title",
+      "hook": "Some titles don't fit.",
+      "audience": "A reviewer verifying required check 2",
+      "module": "Required check 2 · long title",
+      "device": "A ruler and a three-line limit the title crosses",
+      "cta": "See the live showcase",
+      "treatment": "The usual fixes are struck out: <em>shrink the font</em>, <em>cut it off with an ellipsis</em>, <em>hide the overflow</em>. The real long title is typeset at exact scale against a ruler. Lines 4 to 6 cross the three-line limit in red, the counters reach <em>6 / 3 lines</em> and <em>+156 px</em>, and <em>TITLE_OVERFLOW</em> lands. The real <em>insight.failed.png</em> appears with the region and overflow drawn on it, and <em>insight.png</em> is shown as never written.",
+      "beats": [["0.5", "hook; the usual fixes struck out"], ["6.0", "the title crosses the limit"], ["10.5", "TITLE_OVERFLOW"], ["13.0", "the real failed render"], ["19.8", "live click"]],
+      "picks": [3.8, 11.5, 17.5]
+    },
+    {
+      "n": "04",
+      "key": "04-long-body",
+      "title": "Long body",
+      "hook": "When the body runs long, no word may vanish.",
+      "audience": "A reviewer verifying required check 3",
+      "module": "Required check 3 · long body",
+      "device": "A vessel filling past capacity, with a gauge",
+      "cta": "See the live showcase",
+      "treatment": "<em>overflow: hidden</em>, <em>text-overflow: ellipsis</em> and <em>line-clamp</em> are struck out. The real long body pours into its 312.5 px region and keeps going, in red, past the canvas edge, never clipped. The gauge reaches <em>476 px</em> and <em>+163.5 px</em>. <em>BODY_OVERFLOW</em> lands next to <em>approved_text_preserved: pass</em>. The camera then pans over the live report.json on Vercel, and a test-suite template that hides the overflow is caught as <em>TEXT_CLIPPED</em>.",
+      "beats": [["0.5", "hook"], ["6.2", "the body pours past its region"], ["11.8", "BODY_OVERFLOW"], ["15.6", "live report.json"], ["22.6", "hidden overflow caught"]],
+      "picks": [3.6, 12.8, 19.0]
+    },
+    {
+      "n": "05",
+      "key": "05-missing-field",
+      "title": "Missing field",
+      "hook": "A missing field is not a blank to fill in.",
+      "audience": "A reviewer verifying required check 4",
+      "module": "Required check 4 · missing field",
+      "device": "A 4 × 4 matrix of failure cases, then a gate the browser never passes",
+      "cta": "See the live showcase",
+      "treatment": "Three slots check out and <em>source_note</em> is absent. A matrix of every slot against every way to be missing (<em>absent, null, empty, whitespace</em>) fills red, one test case at a time: 16 / 16. A gate diagram shows <em>required_fields</em> stopping it before Chromium, with <em>0</em> renderer calls. On the live showcase the card reads <em>Not rendered</em> and its checks open to <em>required_fields: fail</em>.",
+      "beats": [["0.5", "hook"], ["6.6", "16 cases fill red"], ["14.2", "the gate: 0 renderer calls"], ["20.6", "live click"]],
+      "picks": [4.0, 12.5, 17.8]
+    },
+    {
+      "n": "06",
+      "key": "06-script-input",
+      "title": "HTML and script input",
+      "hook": "<script>alert(\"test\")</script> is approved text.",
+      "audience": "A reviewer verifying required check 5",
+      "module": "Required check 5 · HTML and script-like input",
+      "device": "Split panes (labelled illustration against the real render), then five defence layers lighting up",
+      "cta": "See the live showcase",
+      "treatment": "The script tag types itself out: <em>is approved text, so it must appear as text</em>. On the left, a labelled illustration of what unescaped markup could do is stamped <em>PREVENTED</em>. On the right is the real render, where the markup is literal. Five independent layers light up in turn while the real report's counters hold at zero. A negative control with escaping switched off is still caught as <em>UNSAFE_MARKUP</em>.",
+      "beats": [["0.4", "the script tag types out"], ["5.6", "illustration against the real render"], ["13.2", "five layers, zero counters"], ["21.4", "negative control"], ["26.0", "live click"]],
+      "picks": [4.5, 10.5, 19.5]
+    },
+    {
+      "n": "07",
+      "key": "07-changed-text",
+      "title": "Changed approved text",
+      "hook": "42 became 47. Nobody approved that.",
+      "audience": "A reviewer verifying required check 6",
+      "module": "Required check 6 · changed approved text",
+      "device": "A fingerprint diff: two SHA-256 digests compared character by character",
+      "cta": "See the live showcase",
+      "treatment": "A cursor edits <em>42</em> to <em>47</em> in the approved body. The digest recomputed at render time scrambles, then settles on the real value. A sweep compares it with the recorded digest character by character, and <em>APPROVAL_DIGEST_MISMATCH</em> lands with <em>refused before rendering</em>. Two more cases follow: a renderer that rewrites the number (<em>APPROVED_TEXT_CHANGED</em>, with the excerpt) and CSS that uppercases the title (<em>TEXT_ALTERED_BY_STYLE</em>). The film ends on the live report.json holding both digests.",
+      "beats": [["0.5", "hook"], ["5.2", "the edit"], ["9.8", "digest diff"], ["17.4", "renderer rewrite"], ["22.6", "CSS alteration"], ["28.4", "live report"]],
+      "picks": [7.8, 15.6, 26.0]
+    }
+  ]
+}

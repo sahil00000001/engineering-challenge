@@ -1,0 +1,135 @@
+/* ============================================================================
+   FILM — shared furniture for the seven Task 7 films, on a 1920x1080 board.
+   Loads after kit.css and re-fits the kit's 9:16 defaults to 16:9.
+   Safe area: type stays inside x 120..1800, y 60..1000.
+   ========================================================================== */
+
+.h1, .h2, .h3, .endcard .word, .cap .capt { font-weight: 700; }
+
+/* Real artefacts (renders, site footage) must not be shaded: the vignette and grain
+   sit behind the content layer here, darkening only the background. */
+.vig { z-index: 15; }
+.grain { z-index: 16; }
+
+/* ---- captions (kit .cap), re-fitted for a wide board ---- */
+.cap { left: 120px; width: 1240px; }
+.cap .capk { font-family: var(--font-code); font-size: 22px; letter-spacing: .22em; margin-bottom: 14px; }
+.cap .capt { font-size: 60px; line-height: 1.05; letter-spacing: -.025em; }
+.cap.sm .capt { font-size: 46px; }
+.cap.lg .capt { font-size: 86px; line-height: .98; }
+
+/* ---- series tag, top left: which film this is ---- */
+.series {
+  position: absolute; left: 120px; top: 56px; z-index: 80;
+  display: flex; align-items: center; gap: 18px;
+  font-family: var(--font-code); font-size: 20px; font-weight: 700;
+  letter-spacing: .2em; text-transform: uppercase; color: var(--mut);
+}
+.series b { color: var(--accent); font-weight: 700; }
+.series i { width: 26px; height: 2px; background: var(--accent-2); display: block; }
+
+/* ---- subtitle track: the burned-in explanation for every beat ---- */
+.subt {
+  position: absolute; left: 50%; bottom: 58px; z-index: 85;
+  transform: translateX(-50%);
+  max-width: 1560px; width: max-content;
+  display: flex; align-items: baseline; gap: 22px;
+  padding: 18px 30px 19px;
+  border-radius: 16px;
+  background: rgba(10,10,11,.86);
+  border: 1px solid var(--line);
+  box-shadow: 0 24px 60px -20px rgba(0,0,0,.8);
+  font-size: 30px; font-weight: 500; line-height: 1.3; letter-spacing: -.005em;
+  color: var(--txt);
+  will-change: transform, opacity;
+}
+.subt .sk {
+  flex: none;
+  font-family: var(--font-code); font-size: 18px; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase; color: var(--accent);
+}
+.subt code, .mono, code { font-family: var(--font-code); font-size: .92em; color: var(--accent); }
+
+/* ---- verdict pills: the thing that lands ---- */
+.verdict {
+  display: inline-flex; align-items: center; gap: 14px;
+  padding: 14px 28px; border-radius: 999px;
+  font-family: var(--font-code); font-size: 30px; font-weight: 700; letter-spacing: .04em;
+  white-space: nowrap; will-change: transform, opacity;
+}
+.verdict.pass { background: var(--accent); color: var(--accent-ink); }
+.verdict.fail { background: color-mix(in srgb, var(--bad) 16%, transparent); color: var(--bad); border: 2px solid color-mix(in srgb, var(--bad) 55%, transparent); }
+.verdict.warn { background: color-mix(in srgb, var(--warn) 14%, transparent); color: var(--warn); border: 2px solid color-mix(in srgb, var(--warn) 50%, transparent); }
+.verdict .dotv { width: 14px; height: 14px; border-radius: 50%; background: currentColor; }
+
+/* ---- code / JSON blocks ---- */
+.codebox {
+  position: absolute;
+  font-family: var(--font-code); font-size: 23px; line-height: 1.62;
+  color: var(--txt);
+  background: var(--ink-1);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 26px 30px;
+  box-shadow: 0 40px 90px -40px rgba(0,0,0,.9);
+  white-space: pre;
+}
+.codebox .jl { display: block; will-change: transform, opacity; }
+.codebox .jk { color: var(--accent); }
+.codebox .js { color: #e9e5d6; }
+.codebox .jp { color: var(--mut-2); }
+.codebox .jn { color: var(--warn); }
+.codebox .hl { background: color-mix(in srgb, var(--accent) 16%, transparent); border-radius: 6px; }
+.codebox .bad { color: var(--bad); }
+.codebox .title { display: block; font-size: 17px; letter-spacing: .2em; text-transform: uppercase; color: var(--mut); margin-bottom: 12px; font-weight: 700; }
+
+/* ---- real artefacts: rendered PNGs and site footage ---- */
+.shot {
+  position: absolute; display: block;
+  will-change: transform, opacity;
+}
+.shot img {
+  display: block; width: 100%; height: 100%;
+  border-radius: 18px; border: 1px solid var(--line-2);
+  box-shadow: 0 50px 120px -40px rgba(0,0,0,.95);
+  background: #f6f4ec;
+}
+/* the file name sits under the image, never over the render itself */
+.shot .label {
+  position: absolute; left: 4px; top: calc(100% + 16px);
+  font-family: var(--font-code); font-size: 18px; font-weight: 700; letter-spacing: .06em;
+  color: var(--mut);
+}
+.shot .label b { color: var(--accent); font-weight: 700; }
+.shot .label.bad b { color: var(--bad); }
+
+.site .fbody { padding: 0; position: relative; overflow: hidden; }
+.site .view { position: absolute; left: 0; top: 0; transform-origin: 0 0; will-change: transform; }
+.site .view img { display: block; }
+.frame .url-bar {
+  margin-left: 22px; flex: 1; max-width: 900px; white-space: nowrap; overflow: hidden;
+  height: 40px; border-radius: 999px; background: rgba(255,255,255,.05); border: 1px solid var(--line);
+  display: flex; align-items: center; gap: 12px; padding: 0 18px;
+  font-family: var(--font-code); font-size: 18px; color: var(--mut);
+}
+.frame .url-bar b { color: var(--txt); font-weight: 600; }
+.frame .lock { width: 10px; height: 12px; border: 2px solid var(--accent-2); border-radius: 3px; }
+.frame > .bar { height: 64px; }
+
+/* ---- generic labels ---- */
+.lab {
+  font-family: var(--font-code); font-size: 18px; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase; color: var(--mut);
+}
+
+/* ---- sign-off ---- */
+.endcard .ei { width: 1400px; }
+.endcard .word { font-size: 92px; letter-spacing: -.035em; }
+.endcard .tag { font-size: 34px; }
+.endcard .cta { margin-top: 56px; font-size: 32px; padding: 24px 46px; }
+.endcard .url { font-family: var(--font-code); font-size: 26px; margin-top: 26px; }
+.endnote {
+  position: absolute; left: 0; right: 0; bottom: 86px; z-index: 61; text-align: center;
+  font-family: var(--font-code); font-size: 17px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--mut-2);
+}

@@ -270,6 +270,54 @@ code {
   font-size: 13px;
 }
 
+/* ── Films ── */
+
+.films {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 520px), 1fr));
+  gap: 16px;
+}
+
+.film {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+  background: var(--surface-paper);
+}
+
+.film video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  background: var(--atomity-black);
+}
+
+.film__body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 18px 16px;
+}
+
+.film__title {
+  font-family: var(--font-title);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.film__hook {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--atomity-gray-700);
+}
+
+.film__links {
+  font-size: 13px;
+}
+
 /* ── Footer ── */
 
 .site-footer {

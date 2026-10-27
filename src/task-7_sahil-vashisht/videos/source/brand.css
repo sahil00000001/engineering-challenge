@@ -1,0 +1,75 @@
+/* ============================================================================
+   BRAND — tokens for the Task 7 explainer films.
+   ----------------------------------------------------------------------------
+   The palette is Atomity's dark brand panel from design/atomity.css (surface-dark
+   ink, cream text, mint accent "for use on dark surfaces", its watch/fail tones).
+   The faces are the supplied design/fonts files, referenced in place — never
+   copied — so the films use exactly the typefaces the template renders with.
+   ========================================================================== */
+
+@font-face {
+  font-family: 'Display';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: block;
+  src: url('../../../../design/fonts/GoogleSansFlex-VariableFont_GRAD,ROND,opsz,slnt,wdth,wght.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Code';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: block;
+  src: url('../../../../design/fonts/GoogleSansCode-VariableFont_MONO,wght.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Serif';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('../../../../design/fonts/GowunBatang-Regular.ttf') format('truetype');
+}
+
+:root {
+  /* 16:9 — these films show a website and real renders, which read best wide. */
+  --stage-w: 1920px;
+  --stage-h: 1080px;
+
+  /* ground and surfaces: Atomity surface-dark (#0c0c0c) stepped up gently */
+  --ink: #0a0a0b;
+  --ink-1: #101012;
+  --surf: #16171a;
+  --surf-2: #1d1f23;
+  --line: #2a2c31;
+  --line-2: #393c42;
+
+  /* the one accent: Atomity mint */
+  --accent: #97ddb1;
+  --accent-2: #7ecfa0;
+  --accent-ink: #030303;
+
+  /* type: Atomity cream on dark */
+  --txt: #f6f4ec;
+  --mut: #a3a29b;
+  --mut-2: #6d6c67;
+
+  /* problem states only, from Atomity's tone-watch / tone-fail */
+  --warn: #ffb347;
+  --bad: #ff6961;
+  --info: #8ab4ff;
+
+  --font-display: 'Display', 'Google Sans Flex', -apple-system, 'Segoe UI', sans-serif;
+  --font-code: 'Code', 'Google Sans Code', ui-monospace, monospace;
+  --font-serif: 'Serif', 'Gowun Batang', Georgia, serif;
+
+  /* legacy aliases used by the kit */
+  --mint: var(--accent);
+  --mint-d: var(--accent-2);
+  --mint-ink: var(--accent-ink);
+  --ink1: var(--ink-1);
+  --mut2: var(--mut-2);
+}
+
+.acc, .mint { color: var(--accent); }
+.dim { color: var(--mut); }

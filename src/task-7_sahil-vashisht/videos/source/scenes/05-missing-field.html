@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>05 — Missing is reported, never invented</title>
+<link rel="stylesheet" href="../brand.css">
+<link rel="stylesheet" href="../kit.css">
+<link rel="stylesheet" href="../film.css">
+<style>
+  #hook { position: absolute; left: 120px; top: 290px; width: 960px; z-index: 46; }
+  #hook .h1 { font-size: 104px; line-height: .98; }
+  #slots { position: absolute; left: 1160px; top: 230px; width: 640px; z-index: 22; }
+  .sl { display: flex; align-items: center; gap: 20px; padding: 22px 26px; margin-bottom: 14px; border-radius: 18px;
+    background: var(--ink-1); border: 1px solid var(--line); will-change: transform, opacity; }
+  .sl .ic { flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font-weight: 700;
+    color: var(--accent-ink); background: var(--accent); font-size: 20px; }
+  .sl b { font-family: var(--font-code); font-size: 22px; color: var(--accent); }
+  .sl span { display: block; font-size: 21px; color: var(--mut); margin-top: 3px; }
+  .sl.gone { border: 2px dashed var(--bad); background: color-mix(in srgb, var(--bad) 6%, transparent); }
+  .sl.gone .ic { color: var(--bad); background: color-mix(in srgb, var(--bad) 18%, transparent); }
+  .sl.gone b { color: var(--bad); }
+
+  #matrix { position: absolute; left: 300px; top: 160px; z-index: 20; }
+  .mh { position: absolute; width: 300px; text-align: center; font-family: var(--font-code); font-size: 22px; font-weight: 700; color: var(--mut); }
+  .mr { position: absolute; left: -200px; width: 180px; text-align: right; font-family: var(--font-code); font-size: 24px; font-weight: 700; color: var(--txt); }
+  .cell { position: absolute; width: 300px; height: 118px; border-radius: 16px; border: 2px dashed var(--line-2);
+    display: grid; place-items: center; align-content: center; gap: 6px; text-align: center; }
+  .cell .val { font-family: var(--font-code); font-size: 26px; color: var(--mut); }
+  .cell .code { font-family: var(--font-code); font-size: 14px; font-weight: 700; letter-spacing: .04em; color: var(--bad); opacity: 0; }
+  .cell .redbg { position: absolute; inset: -2px; border-radius: 16px; border: 2px solid var(--bad);
+    background: color-mix(in srgb, var(--bad) 12%, transparent); opacity: 0; }
+  #mcount { position: absolute; left: 0; top: 640px; width: 1220px; text-align: center; font-size: 30px; font-weight: 600; }
+  #mcount .big { color: var(--bad); font-family: var(--font-code); font-weight: 700; }
+
+  #gate { position: absolute; left: 120px; top: 230px; width: 1680px; height: 560px; z-index: 22; }
+  .node { position: absolute; top: 60px; width: 420px; padding: 28px 30px; border-radius: 22px; background: var(--ink-1); border: 1px solid var(--line); }
+  .node .lab { margin-bottom: 12px; }
+  .node .t { font-size: 34px; font-weight: 700; letter-spacing: -.02em; }
+  .node .s { font-family: var(--font-code); font-size: 20px; color: var(--mut); margin-top: 10px; line-height: 1.5; }
+  .node.stop { border: 2px solid var(--bad); }
+  .node.off { opacity: .35; }
+  .arrow { position: absolute; top: 150px; height: 4px; background: var(--line-2); }
+  .arrow.cut { background: repeating-linear-gradient(90deg, var(--bad) 0 14px, transparent 14px 26px); }
+  #calls { position: absolute; left: 1260px; top: 300px; width: 420px; text-align: center; }
+  #calls .big { font-size: 120px; font-weight: 700; color: var(--accent); letter-spacing: -.03em; line-height: 1; }
+  #outs { position: absolute; left: 0; top: 330px; width: 1100px; display: flex; gap: 16px; }
+  .out { flex: 1; padding: 18px 22px; border-radius: 16px; border: 1px solid var(--line); background: var(--ink-1); }
+  .out b { display: block; font-family: var(--font-code); font-size: 22px; }
+  .out span { font-size: 18px; color: var(--mut); }
+  .out.no b { color: var(--mut); text-decoration: line-through; text-decoration-color: var(--bad); text-decoration-thickness: 3px; }
+  .out.ok b { color: var(--accent); }
+</style>
+</head>
+<body>
+<div id="fit"><div id="stage">
+
+  <div id="hook">
+    <div class="kick rv" style="margin-bottom:28px"><i>Required check 4 · missing field</i></div>
+    <div class="h1">
+      <span class="rv"><i>A missing field is</i></span>
+      <span class="rv"><i>not a blank</i></span>
+      <span class="rv"><i class="acc">to fill in.</i></span>
+    </div>
+  </div>
+  <div id="slots"></div>
+  <div id="matrix"><div id="mcount"><span class="big" id="mn">0</span> / 16 cases → <code>MISSING_REQUIRED_FIELD</code> · never rendered</div></div>
+  <div id="gate"></div>
+
+</div></div>
+
+<script src="../brand.js"></script>
+<script src="../kit.js"></script>
+<script src="../footage/site-layout.js"></script>
+<script src="../film.js"></script>
+<script>
+(() => {
+  const stage = document.getElementById('stage');
+  const { E, tr, lerp, set, lines, linesOut } = K;
+  const atmoEl = K.atmo(stage, [
+    { x: 1100, y: 160, w: 860, c: 'color-mix(in srgb, var(--bad) 7%, transparent)' },
+    { x: 120, y: 560, w: 760, c: 'color-mix(in srgb, var(--accent) 9%, transparent)' },
+  ]);
+  const series = F.series(stage, '05', 'Missing field');
+
+  /* the missing-source-note fixture: three slots present, one absent */
+  const SL = [
+    ['brand', 'atomity', false], ['title', 'A new sovereign region changes…', false],
+    ['body', 'Fictional Provider A opened…', false], ['source_note', 'absent from the content', true],
+  ];
+  const slotsEl = document.getElementById('slots');
+  const slots = SL.map(([k, v, gone]) => F.el(slotsEl, 'sl' + (gone ? ' gone' : ''), '<span class="ic">' + (gone ? '?' : '✓') + '</span><div><b>' + k + '</b><span>' + v + '</span></div>'));
+
+  /* every slot x every way to be missing: the 16 cases in tests/pipeline.test.ts */
+  const COLS = [['absent', '—'], ['null', 'null'], ['empty', '""'], ['whitespace', '" \\n "']];
+  const ROWS = ['brand', 'title', 'body', 'source_note'];
+  const matrix = document.getElementById('matrix');
+  COLS.forEach(([h], j) => { const d = F.el(matrix, 'mh', h); d.style.left = (j * 320) + 'px'; d.style.top = '0px'; });
+  ROWS.forEach((r, i) => { const d = F.el(matrix, 'mr', r); d.style.top = (60 + i * 136 + 42) + 'px'; });
+  const cells = [];
+  ROWS.forEach((r, i) => COLS.forEach(([, v], j) => {
+    const c = F.el(matrix, 'cell', '<div class="redbg"></div><div class="val">' + F.esc(v) + '</div><div class="code">MISSING_REQUIRED_FIELD</div>');
+    c.style.left = (j * 320) + 'px'; c.style.top = (60 + i * 136) + 'px';
+    cells.push(c);
+  }));
+  const mn = document.getElementById('mn');
+  const mcount = document.getElementById('mcount');
+
+  /* the gate: required_fields stops it; the renderer is never reached */
+  const gate = document.getElementById('gate');
+  const n1 = F.el(gate, 'node', '<div class="lab">content</div><div class="t">source_note</div><div class="s">received: "absent"</div>', { left: '0px' });
+  const a1 = F.el(gate, 'arrow', null, { left: '420px', width: '120px' });
+  const n2 = F.el(gate, 'node stop', '<div class="lab">check</div><div class="t">required_fields ✕</div><div class="s">MISSING_REQUIRED_FIELD</div>', { left: '540px' });
+  const a2 = F.el(gate, 'arrow cut', null, { left: '960px', width: '120px' });
+  const n3 = F.el(gate, 'node off', '<div class="lab">browser</div><div class="t">Chromium</div><div class="s">never started for this content</div>', { left: '1080px', width: '420px' });
+  const calls = F.el(gate, '', '<div class="big" id="cn">0</div><div class="lab" style="margin-top:8px">renderer calls · the test renderer throws if called</div>');
+  calls.id = 'calls';
+  const outs = F.el(gate, '', null); outs.id = 'outs';
+  const OUTS = [['ok', 'report.json', 'written: required_fields fail'], ['no', 'insight.png', 'not written'], ['no', 'insight.html', 'not written']];
+  const outEls = OUTS.map(([c, b, s]) => F.el(outs, 'out ' + c, '<b>' + b + '</b><span>' + s + '</span>'));
+  const gnodes = [n1, a1, n2, a2, n3];
+
+  /* live */
+  const site = F.site(stage, { x: 560, y: 96, w: 800, h: 840 });
+  const openCard = site.openCard('missing-source-note');
+  const cur = K.cursor(stage);
+
+  const sub = F.subs(stage, [
+    [0.6, 5.4, 'Check 4', 'A required field is missing. The renderer must not guess, pad or invent it.'],
+    [5.6, 14.0, '16 cases', 'Every slot, missing in every way (absent, null, empty, whitespace), gives the same predictable error.'],
+    [14.2, 20.4, 'Never rendered', 'Stopped before the browser. In the tests, the renderer throws if it is ever called.'],
+    [20.6, 27.6, 'Live', 'Live: the card reads "Not rendered", and its checks show <code>required_fields: fail</code>.'],
+  ]);
+  const end = F.endcard(stage, 'Missing is reported,<br><span class="acc">never invented.</span>');
+
+  const hook = document.getElementById('hook');
+  const T = { hook: 0.5, slots: 1.4, gone: 3.2, matrix: 5.6, cell0: 6.6, cellStep: 0.36, gate: 14.2, live: 20.6, endIn: 27.8 };
+  T.click = T.live + 3.7;
+  const DUR = 32;
+  const BX = window.SITE.boxes['card:missing-source-note'];
+  const K0 = { t: T.live + 0.3, x: 720, y: 2250, z: 0.5 };
+  const K1 = { t: T.live + 2.3, x: BX.x + BX.w / 2, y: BX.y + 289, z: 1.28 };
+  const S = window.SITE.boxes['summary:missing-source-note'];
+  const aim = site.project(K1, S.x + 46, S.y + S.h / 2);
+  const PATH = [{ t: T.live + 2.4, x: 1500, y: 820 }, { t: T.click - 0.15, x: aim.x, y: aim.y, e: E.io4 }];
+
+  K.boot({
+    dur: DUR,
+    render(t) {
+      K.drift(atmoEl, t);
+      series.show(t);
+      sub(t);
+
+      lines(hook, t, T.hook, { step: 0.11, d: 0.8 });
+      if (t > T.matrix - 0.9) linesOut(hook, t, T.matrix - 0.9, { step: 0.05, d: 0.4 });
+      set(hook, { o: 1 - tr(t, T.matrix - 0.45, T.matrix, E.lin) });
+      slots.forEach((el, i) => {
+        const p = tr(t, T.slots + i * 0.25, T.slots + i * 0.25 + 0.6, E.out5);
+        const shake = i === 3 ? Math.sin(t * 40) * 6 * K.pulse(t, T.gone, T.gone + 0.6, 0.3) : 0;
+        set(el, { o: p * (1 - tr(t, T.matrix - 0.6, T.matrix - 0.1, E.lin)), x: lerp(50, 0, p) + shake });
+      });
+
+      /* the matrix fills red, one case at a time */
+      const mOut = tr(t, T.gate - 0.6, T.gate - 0.1, E.lin);
+      set(matrix, { o: tr(t, T.matrix, T.matrix + 0.6) * (1 - mOut) });
+      let done = 0;
+      cells.forEach((c, i) => {
+        const t0 = T.cell0 + i * T.cellStep;
+        const p = tr(t, t0, t0 + 0.4, E.spring);
+        if (t >= t0) done = i + 1;
+        set(c.querySelector('.redbg'), { o: tr(t, t0, t0 + 0.15), s: lerp(1.12, 1, p) });
+        set(c.querySelector('.code'), { o: tr(t, t0 + 0.1, t0 + 0.3) });
+        set(c, { s: 1 + K.pulse(t, t0 - 0.05, t0 + 0.35, 0.1) * 0.05 });
+      });
+      mn.textContent = done;
+      set(mcount, { o: tr(t, T.cell0, T.cell0 + 0.4) });
+
+      /* the gate */
+      set(gate, { o: tr(t, T.gate, T.gate + 0.5) * (1 - tr(t, T.live - 0.6, T.live - 0.1, E.lin)) });
+      gnodes.forEach((g, i) => {
+        const p = tr(t, T.gate + 0.2 + i * 0.35, T.gate + 0.7 + i * 0.35, E.out5);
+        set(g, { o: p * (g === n3 ? 0.35 : 1), x: lerp(-30, 0, p) });
+      });
+      set(n2, { s: 1 + K.pulse(t, T.gate + 1.6, T.gate + 2.3, 0.2) * 0.05 });
+      set(calls, { o: tr(t, T.gate + 2.2, T.gate + 2.7), s: lerp(1.3, 1, tr(t, T.gate + 2.2, T.gate + 2.9, E.spring)) });
+      outEls.forEach((o, i) => set(o, { o: tr(t, T.gate + 3.0 + i * 0.3, T.gate + 3.4 + i * 0.3), y: lerp(20, 0, tr(t, T.gate + 3.0 + i * 0.3, T.gate + 3.6 + i * 0.3, E.out5)) }));
+
+      /* live */
+      site.show(t, T.live, T.endIn - 0.3);
+      site.cam(t, [K0, K1]);
+      openCard(t, T.click + 0.05);
+      const c = K.wayp(t, PATH);
+      set(cur, { x: c.x, y: c.y, o: tr(t, T.live + 2.3, T.live + 2.6) * (1 - tr(t, T.endIn - 1.0, T.endIn - 0.6, E.lin)) });
+      K.click(cur, t, [T.click]);
+
+      end.show(t, T.endIn);
+    },
+  });
+})();
+</script>
+</body>
+</html>

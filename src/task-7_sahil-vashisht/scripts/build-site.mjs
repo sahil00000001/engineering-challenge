@@ -25,11 +25,21 @@ for (const dir of ["template", "examples", "fixtures", "config", "schemas"]) {
   await cp(path.join(SUBMISSION, dir), path.join(DIST, SUBMISSION_PATH, dir), { recursive: true });
 }
 await cp(path.join(SUBMISSION, "site", "site.css"), path.join(DIST, "site.css"));
+// The explainer films (videos/), if they have been rendered.
+for (const dir of ["films", "posters"]) {
+  await cp(path.join(SUBMISSION, "videos", dir), path.join(DIST, SUBMISSION_PATH, "videos", dir), { recursive: true }).catch(() => {});
+}
 
 /**
  * @typedef {{ fixture: string, purpose: string | null, content_id: string | null, status: "pass" | "fail",
  *   checks: Record<string, string>, failure_codes: string[], png: string | null, html: string | null, report: string }} ExampleEntry
+ * @typedef {{ n: string, key: string, title: string, hook: string, module: string, device: string }} FilmEntry
  */
+
+/** @type {FilmEntry[]} */
+const films = await readFile(path.join(SUBMISSION, "videos", "films.json"), "utf8")
+  .then((text) => JSON.parse(text).films)
+  .catch(() => []);
 
 /** @type {ExampleEntry[]} */
 const examples = JSON.parse(await readFile(path.join(SUBMISSION, "examples", "index.json"), "utf8"));
@@ -97,6 +107,33 @@ function exampleCard(example) {
 
 const passed = examples.filter((e) => e.status === "pass").length;
 
+/** @param {FilmEntry} film */
+function filmCard(film) {
+  const src = at(`videos/films/${film.key}.mp4`);
+  return `
+        <article class="film card">
+          <video controls playsinline preload="none" poster="${esc(at(`videos/posters/${film.key}.png`))}" width="1920" height="1080">
+            <source src="${esc(src)}" type="video/mp4">
+          </video>
+          <div class="film__body">
+            <p class="micro-label">Film ${esc(film.n)} · ${esc(film.module)}</p>
+            <h3 class="film__title">${esc(film.title)}</h3>
+            <p class="film__hook">${esc(film.hook)}</p>
+            <p class="film__links"><a href="${esc(src)}" download>Download MP4</a></p>
+          </div>
+        </article>`;
+}
+
+const filmsSection = films.length
+  ? `
+    <section class="section-block" aria-labelledby="films-title">
+      <h2 class="section-title" id="films-title">Seven films, one per check</h2>
+      <p class="section-lead">Captioned explainer films rendered frame by frame from code. Every render, number and screen in them comes from this repository or this site. They play muted.</p>
+      <div class="films">${films.map(filmCard).join("")}
+      </div>
+    </section>`
+  : "";
+
 const html = `<!doctype html>
 <html lang="en">
 <head>
@@ -141,6 +178,8 @@ const html = `<!doctype html>
         <li><span class="pipeline__step">05</span><strong>Validate</strong><span>The live DOM and the pixels are measured against the approved text and the layout regions.</span></li>
       </ol>
     </section>
+
+${filmsSection}
 
     <section class="section-block" aria-labelledby="examples-title">
       <h2 class="section-title" id="examples-title">Every fixture, every outcome</h2>

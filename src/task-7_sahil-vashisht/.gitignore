@@ -3,3 +3,7 @@ out/
 dist/
 .vercel/
 .env*
+videos/shots/
+videos/sheets/
+videos/check-shots/
+videos/thumbs/

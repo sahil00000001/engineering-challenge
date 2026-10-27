@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>01 — From approved text to a checked image</title>
+<link rel="stylesheet" href="../brand.css">
+<link rel="stylesheet" href="../kit.css">
+<link rel="stylesheet" href="../film.css">
+<style>
+  /* hook */
+  #hook { position: absolute; left: 120px; top: 250px; width: 1000px; z-index: 46; }
+  #hook .h1 { font-size: 96px; line-height: .98; }
+  #pains { position: absolute; left: 1180px; top: 262px; width: 620px; z-index: 22; }
+  .pain {
+    display: flex; align-items: center; gap: 22px;
+    padding: 26px 30px; margin-bottom: 18px; border-radius: 20px;
+    background: rgba(255,255,255,.03); border: 1px dashed var(--line-2);
+    font-size: 30px; font-weight: 600; color: #b9b6ac; will-change: transform, opacity;
+  }
+  .pain b { flex: none; width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center;
+    font-size: 26px; color: var(--bad); background: color-mix(in srgb, var(--bad) 14%, transparent); }
+  .pain code { color: var(--bad); }
+
+  /* conveyor */
+  #track { position: absolute; left: 150px; right: 150px; top: 640px; height: 4px; z-index: 12;
+    background: linear-gradient(90deg, var(--line) 0 50%, transparent 50% 100%); background-size: 28px 4px; }
+  #trackFill { position: absolute; left: 150px; top: 640px; height: 4px; z-index: 13; background: var(--accent);
+    box-shadow: 0 0 18px color-mix(in srgb, var(--accent) 60%, transparent); }
+  .station {
+    position: absolute; top: 560px; width: 300px; height: 168px; z-index: 14;
+    border-radius: 24px; background: var(--ink-1); border: 2px solid var(--line);
+    padding: 22px 24px; will-change: transform, opacity;
+  }
+  .station .num { font-family: var(--font-code); font-size: 18px; font-weight: 700; letter-spacing: .18em; color: var(--mut-2); }
+  .station .nm { font-size: 38px; font-weight: 700; letter-spacing: -.02em; margin-top: 6px; }
+  .station .ds { font-size: 19px; color: var(--mut); margin-top: 8px; line-height: 1.3; }
+  .station.on { border-color: var(--accent); }
+  .station .glowring { position: absolute; inset: -2px; border-radius: 24px; border: 2px solid var(--accent);
+    box-shadow: 0 0 40px color-mix(in srgb, var(--accent) 40%, transparent); opacity: 0; }
+
+  #token { left: 0; top: 330px; width: 330px; padding: 18px 22px; font-size: 19px; line-height: 1.55; z-index: 30; }
+
+  /* result */
+  #report { position: absolute; left: 1220px; top: 190px; width: 580px; z-index: 24;
+    padding: 30px 34px; border-radius: 24px; background: var(--ink-1); border: 1px solid var(--line); }
+  #report .lab { margin-bottom: 18px; }
+  .chk { display: flex; align-items: center; justify-content: space-between; padding: 11px 0;
+    border-bottom: 1px solid var(--line); font-family: var(--font-code); font-size: 23px; }
+  .chk:last-of-type { border-bottom: 0; }
+  .chk .pill { font-size: 19px; padding: 6px 16px; font-family: var(--font-code); }
+  #status { margin-top: 22px; }
+</style>
+</head>
+<body>
+<div id="fit"><div id="stage">
+
+  <div id="hook">
+    <div class="kick rv" style="margin-bottom:28px"><i>Evidence-to-Insight · one visual template</i></div>
+    <div class="h1">
+      <span class="rv"><i>Approved text should</i></span>
+      <span class="rv"><i>become an image</i></span>
+      <span class="rv"><i class="acc">exactly as approved.</i></span>
+    </div>
+  </div>
+  <div id="pains"></div>
+
+  <div id="track"></div>
+  <div id="trackFill"></div>
+  <div id="report"><div class="lab">report.json · visual validation</div><div id="checks"></div><div id="status"></div></div>
+
+</div></div>
+
+<script src="../brand.js"></script>
+<script src="../kit.js"></script>
+<script src="../footage/site-layout.js"></script>
+<script src="../film.js"></script>
+<script>
+(() => {
+  const stage = document.getElementById('stage');
+  const { E, tr, lerp, set, lines, linesOut } = K;
+  const atmoEl = K.atmo(stage, [
+    { x: 160, y: 120, w: 900, c: 'color-mix(in srgb, var(--accent) 13%, transparent)' },
+    { x: 1150, y: 520, w: 760, c: 'rgba(138,180,255,.07)' },
+  ]);
+  const series = F.series(stage, '01', 'Overview');
+
+  /* ---- the problem: what can go wrong between approval and image ---- */
+  const PAINS = [
+    ['A long title gets cut with <code>…</code>'],
+    ['A number changes after approval'],
+    ['<code>&lt;script&gt;</code> in the copy runs'],
+  ];
+  const painsEl = document.getElementById('pains');
+  const pains = PAINS.map(([txt]) => F.el(painsEl, 'pain', '<b>✕</b><span>' + txt + '</span>'));
+
+  /* ---- the five stations: the names on the live showcase ---- */
+  const ST = [
+    ['01', 'Contract', 'Typed input + approval digest'],
+    ['02', 'Bind', 'HTML-escaped, text only'],
+    ['03', 'Render', 'Chromium · JS off · CSP'],
+    ['04', 'Capture', '1200 × 627 PNG'],
+    ['05', 'Validate', 'DOM + pixels, 8 checks'],
+  ];
+  const cx = (i) => 960 + (i - 2) * 350;
+  const stations = ST.map(([n, nm, ds], i) => {
+    const d = F.el(stage, 'station', '<div class="num">' + n + '</div><div class="nm">' + nm + '</div><div class="ds">' + ds + '</div><div class="glowring"></div>');
+    d.style.left = (cx(i) - 150) + 'px';
+    return d;
+  });
+  const token = F.el(stage, 'codebox', F.jsonLines({ title: 'A new sovereign…', body: '…42 managed…', source_note: '…', brand: 'atomity' }));
+  token.id = 'token';
+  const fill = document.getElementById('trackFill');
+  const track = document.getElementById('track');
+
+  /* ---- the result: the real PNG and its real checks ---- */
+  const png = F.shot(stage, F.ART('normal', 'insight.png'), { x: 120, y: 190, w: 1040, label: 'examples/normal/insight.png' });
+  const checksEl = document.getElementById('checks');
+  const chks = F.DATA.checks.map((c) => F.el(checksEl, 'chk', '<span>' + c + '</span><span class="pill good">pass</span>'));
+  const pills = chks.map((c) => c.querySelector('.pill'));
+  const status = F.el(document.getElementById('status'), 'verdict pass', '<span class="dotv"></span>status: pass');
+  const report = document.getElementById('report');
+
+  /* ---- the live showcase ---- */
+  const site = F.site(stage, { x: 150, y: 120, w: 1620, h: 800 });
+
+  const sub = F.subs(stage, [
+    [0.6, 5.0, 'The goal', 'Turn approved content into a 1200 × 627 image without changing a single word.'],
+    [5.3, 7.4, '01 · Contract', 'Typed input: every slot present, and the text matches its approval digest.'],
+    [7.4, 9.0, '02 · Bind', 'Content is HTML-escaped and bound as element text, never as markup.'],
+    [9.0, 10.6, '03 · Render', 'Headless Chromium renders it with page JavaScript off and a hash-pinned CSP.'],
+    [10.6, 12.2, '04 · Capture', 'A 1200 × 627 PNG is captured once the brand fonts and logo have loaded.'],
+    [12.2, 14.6, '05 · Validate', 'The live DOM and the pixels are measured against the approved text.'],
+    [14.8, 19.6, 'Result', 'All 8 checks pass, so <code>insight.png</code> is written next to its <code>report.json</code>.'],
+    [19.9, 25.3, 'Live on Vercel', 'The showcase publishes every render and every report from the repository.'],
+    [25.3, 31.0, 'Live on Vercel', '9 fixtures: 3 must pass, 6 must fail for exactly the right reason.'],
+  ]);
+  const end = F.endcard(stage, 'Exactly what was approved,<br><span class="acc">or the reason why not.</span>');
+
+  const hook = document.getElementById('hook');
+  const T = {
+    hook: 0.5, pains: 1.4,
+    belt: 5.2, st0: 5.9, stStep: 1.6,
+    result: 14.7, checks: 15.6, status: 17.4,
+    site: 19.6, endIn: 31.1,
+  };
+  const DUR = 36;
+  const sx = (i) => cx(i) - 165;
+  const KEYS = [
+    { t: T.site + 0.2, x: 720, y: 360, z: 1.12 },
+    { t: 22.4, x: 720, y: 760, z: 1.12 },
+    { t: 25.2, x: 720, y: 1330, z: 1.22 },
+    { t: 27.8, x: 720, y: 1845, z: 1.02 },
+    { t: 30.6, x: 720, y: 2265, z: 1.02 },
+  ];
+
+  K.boot({
+    dur: DUR,
+    render(t) {
+      K.drift(atmoEl, t);
+      series.show(t);
+      sub(t);
+
+      /* hook + problem */
+      lines(hook, t, T.hook, { step: 0.1, d: 0.8 });
+      if (t > T.belt - 0.9) linesOut(hook, t, T.belt - 0.9, { step: 0.05, d: 0.4 });
+      set(hook, { o: 1 - tr(t, T.belt - 0.5, T.belt, E.lin) });
+      pains.forEach((el, i) => {
+        const p = tr(t, T.pains + i * 0.35, T.pains + i * 0.35 + 0.6, E.out5);
+        set(el, { o: p * (1 - tr(t, T.belt - 0.6, T.belt - 0.1, E.lin)), x: lerp(40, 0, p) });
+      });
+
+      /* conveyor: the token stops over each station, which lights as it arrives */
+      const beltOut = tr(t, T.result - 0.6, T.result, E.in);
+      set(track, { o: tr(t, T.belt, T.belt + 0.5) * (1 - beltOut) });
+      let pos = -1;
+      for (let i = 0; i < ST.length; i++) {
+        const ti = T.st0 + i * T.stStep;
+        if (t >= ti - 0.7) pos = i - 1 + tr(t, ti - 0.7, ti, E.io4);
+      }
+      const tokX = pos < 0 ? lerp(-380, sx(0), tr(t, T.belt, T.st0, E.out5)) : lerp(sx(Math.floor(pos)), sx(Math.ceil(pos)), pos - Math.floor(pos));
+      set(token, { o: tr(t, T.belt, T.belt + 0.4) * (1 - beltOut), x: tokX, y: Math.sin(t * 3) * 4 });
+      set(fill, { w: Math.max(0, tokX + 165 - 150) * (1 - beltOut), o: 1 - beltOut });
+      stations.forEach((el, i) => {
+        const ti = T.st0 + i * T.stStep;
+        const p = tr(t, T.belt + 0.1 + i * 0.12, T.belt + 0.8 + i * 0.12, E.out5);
+        const lit = tr(t, ti, ti + 0.5, E.spring);
+        el.classList.toggle('on', t >= ti);
+        set(el.querySelector('.glowring'), { o: K.pulse(t, ti - 0.05, ti + 1.2, 0.2) });
+        set(el, { o: p * (1 - beltOut), y: lerp(60, 0, p) - lit * 0 + beltOut * -40, s: 1 + K.pulse(t, ti - 0.05, ti + 0.6, 0.1) * 0.06 });
+      });
+
+      /* result: the real PNG and the real checks */
+      const resOut = tr(t, T.site - 0.7, T.site, E.in);
+      const rp = tr(t, T.result, T.result + 0.9, E.out5);
+      set(png, { o: rp * (1 - resOut), s: lerp(0.86, 1, rp), y: lerp(60, 0, rp) - resOut * 40 });
+      const rr = tr(t, T.result + 0.3, T.result + 1.1, E.out5);
+      set(report, { o: rr * (1 - resOut), x: lerp(60, 0, rr) });
+      chks.forEach((c, i) => set(c, { o: tr(t, T.checks + i * 0.12 - 0.3, T.checks + i * 0.12, E.out) }));
+      pills.forEach((p, i) => {
+        const t0 = T.checks + i * 0.18;
+        set(p, { o: tr(t, t0, t0 + 0.12, E.out), s: lerp(2, 1, tr(t, t0, t0 + 0.5, E.spring)) });
+      });
+      set(status, { o: tr(t, T.status, T.status + 0.15), s: lerp(1.8, 1, tr(t, T.status, T.status + 0.6, E.spring)) });
+
+      /* the live showcase */
+      site.show(t, T.site, T.endIn - 0.3);
+      site.cam(t, KEYS);
+
+      end.show(t, T.endIn);
+    },
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>02 — Four slots, four exact strings</title>
+<link rel="stylesheet" href="../brand.css">
+<link rel="stylesheet" href="../kit.css">
+<link rel="stylesheet" href="../film.css">
+<style>
+  #hook { position: absolute; left: 120px; top: 300px; width: 1300px; z-index: 46; }
+  #hook .h1 { font-size: 100px; line-height: .98; }
+
+  #fields { position: absolute; left: 120px; top: 176px; width: 790px; z-index: 22;
+    padding: 24px 30px 10px; border-radius: 24px; background: var(--ink-1); border: 1px solid var(--line); }
+  .f { position: relative; padding: 13px 0 14px; border-top: 1px solid var(--line); }
+  .f .k { font-family: var(--font-code); font-size: 18px; font-weight: 700; color: var(--accent); letter-spacing: .04em; }
+  .f .v { font-size: 25px; line-height: 1.3; margin-top: 5px; white-space: pre-line; color: var(--txt); }
+  .f.body .v { font-family: var(--font-serif); font-size: 19px; line-height: 1.45; color: #d9d5c8; }
+  .f.src .v { font-size: 20px; color: #c9c5b8; }
+  .f.dig .v { font-family: var(--font-code); font-size: 18px; color: var(--mut); }
+  .f .hl { position: absolute; inset: 4px -14px; border-radius: 12px; background: color-mix(in srgb, var(--accent) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); opacity: 0; }
+
+  #wire { position: absolute; left: 1000px; top: 230px; width: 800px; height: 418px; z-index: 18;
+    border-radius: 18px; border: 2px dashed var(--line-2); background: rgba(246,244,236,.025); }
+  .slot { position: absolute; border-radius: 10px; border: 2px dashed var(--line-2);
+    display: flex; align-items: flex-start; justify-content: flex-start; padding: 8px 12px; }
+  .slot span { font-family: var(--font-code); font-size: 17px; font-weight: 700; color: var(--mut); letter-spacing: .06em; }
+  .slot .fillbg { position: absolute; inset: 0; border-radius: 8px; background: color-mix(in srgb, var(--accent) 12%, transparent); opacity: 0; }
+  .slot .ok { position: absolute; inset: -2px; border-radius: 10px; border: 2px solid var(--accent); opacity: 0; }
+  .fly { position: absolute; left: 0; top: 0; z-index: 40; padding: 8px 18px; border-radius: 999px;
+    background: var(--accent); color: var(--accent-ink); font-family: var(--font-code); font-size: 20px; font-weight: 700;
+    box-shadow: 0 14px 30px -10px rgba(0,0,0,.7); }
+
+  #checks { position: absolute; left: 120px; top: 176px; width: 790px; z-index: 24;
+    padding: 24px 30px 14px; border-radius: 24px; background: var(--ink-1); border: 1px solid var(--line); }
+  .ck { display: grid; grid-template-columns: 1fr auto; align-items: center; column-gap: 20px; padding: 10px 0; border-top: 1px solid var(--line); }
+  .ck .n { font-family: var(--font-code); font-size: 22px; }
+  .ck .m { grid-column: 1 / 2; font-size: 18px; color: var(--mut); margin-top: 3px; }
+  .ck .pill { grid-row: 1 / 3; grid-column: 2; font-family: var(--font-code); font-size: 18px; padding: 6px 16px; }
+
+  #det { position: absolute; left: 120px; top: 170px; width: 1680px; height: 700px; z-index: 26; }
+  .runlab { position: absolute; font-family: var(--font-code); font-size: 20px; font-weight: 700; color: var(--mut); }
+  .runlab b { color: var(--accent); }
+  #diff { position: absolute; left: 0; right: 0; top: 590px; text-align: center; }
+  #diff .big { font-size: 96px; font-weight: 700; letter-spacing: -.03em; color: var(--accent); }
+  #diff .lab { margin-top: 6px; }
+</style>
+</head>
+<body>
+<div id="fit"><div id="stage">
+
+  <div id="hook">
+    <div class="kick rv" style="margin-bottom:28px"><i>Required check 1 · normal content</i></div>
+    <div class="h1">
+      <span class="rv"><i>Four slots.</i></span>
+      <span class="rv"><i>Four approved strings.</i></span>
+      <span class="rv"><i class="acc">Nothing added.</i></span>
+    </div>
+  </div>
+
+  <div id="fields"><div class="lab" style="margin-bottom:12px">fixtures/normal.json · content</div></div>
+  <div id="wire"></div>
+  <div id="checks"><div class="lab" style="margin-bottom:10px">examples/normal/report.json · checks</div></div>
+  <div id="det">
+    <div class="runlab" id="lab1"><b>run 1</b> · png sha256 278a53d02e829eb3…</div>
+    <div class="runlab" id="lab2"><b>run 2</b> · png sha256 278a53d02e829eb3…</div>
+    <div id="diff"><div class="big" id="diffN">0</div><div class="lab">pixels that differ between the two runs</div></div>
+  </div>
+
+</div></div>
+
+<script src="../brand.js"></script>
+<script src="../kit.js"></script>
+<script src="../footage/site-layout.js"></script>
+<script src="../film.js"></script>
+<script>
+(() => {
+  const stage = document.getElementById('stage');
+  const { E, tr, lerp, set, lines, linesOut } = K;
+  const atmoEl = K.atmo(stage, [
+    { x: 1050, y: 160, w: 900, c: 'color-mix(in srgb, var(--accent) 12%, transparent)' },
+    { x: 80, y: 560, w: 760, c: 'rgba(138,180,255,.06)' },
+  ]);
+  const series = F.series(stage, '02', 'Normal content');
+
+  /* ---- the real fixture, field by field (fixtures/normal.json) ---- */
+  const FIELDS = [
+    ['brand', '', 'atomity'],
+    ['title', '', 'A new sovereign region changes where regulated workloads can run'],
+    ['body', 'body', 'Fictional Provider A opened a sovereign cloud region in Frankfurt on 3 October 2026, with 42 managed services at launch and operations run under EU jurisdiction.\n\nTeams holding data under residency rules can now weigh this region against their current hosting at the next placement review.'],
+    ['source_note', 'src', 'Fictional Provider A press release, 3 Oct 2026. Synthetic test content, not real news.'],
+    ['approval.content_sha256', 'dig', '13f63a810a525410a2b1d75510ac6389…'],
+  ];
+  const fieldsEl = document.getElementById('fields');
+  const rows = FIELDS.map(([k, cls, v]) => F.el(fieldsEl, 'f ' + cls, '<div class="hl"></div><div class="k">' + k + '</div><div class="v">' + F.esc(v) + '</div>'));
+
+  /* ---- the template, as a wireframe of its real regions (canvas px × 2/3) ---- */
+  const wire = document.getElementById('wire');
+  const SLOTS = {
+    title: [32, 32, 536, 69],
+    body: [32, 117, 536, 208],
+    source_note: [32, 362, 536, 30],
+    brand: [606, 348, 176, 50],
+  };
+  const panel = F.el(wire, '', null, { position: 'absolute', left: '600px', top: '0', width: '200px', height: '418px',
+    borderRadius: '0 16px 16px 0', background: 'color-mix(in srgb, var(--accent) 10%, transparent)', borderLeft: '2px dashed var(--line-2)' });
+  const slotEls = {};
+  Object.entries(SLOTS).forEach(([name, [x, y, w, h]]) => {
+    const s = F.el(wire, 'slot', '<div class="fillbg"></div><div class="ok"></div><span>' + name + '</span>',
+      { left: x + 'px', top: y + 'px', width: w + 'px', height: h + 'px' });
+    slotEls[name] = s;
+  });
+  const png = F.shot(stage, F.ART('normal', 'insight.png'), { x: 1000, y: 230, w: 800, z: 21,
+    label: '<b>✓</b> examples/normal/insight.png · 1200 × 627' });
+
+  /* fly chips: field row -> slot */
+  const ORDER = ['title', 'body', 'source_note', 'brand'];
+  const rowOf = (k) => rows[FIELDS.findIndex((f) => f[0] === k)];
+  const flies = ORDER.map((k) => {
+    const chip = F.el(stage, 'fly', k === 'brand' ? 'brand → atomity_logo.svg' : k);
+    const r = rowOf(k);
+    const from = { x: fieldsEl.offsetLeft + r.offsetLeft + 560, y: fieldsEl.offsetTop + r.offsetTop + 12 };
+    const [x, y, w, h] = SLOTS[k];
+    const to = { x: wire.offsetLeft + x + w / 2 - chip.offsetWidth / 2, y: wire.offsetTop + y + h / 2 - 20 };
+    return { chip, from, to, k };
+  });
+
+  /* ---- the real checks, with the measurements behind them ---- */
+  const FACTS = [
+    'strict schema · approval record present',
+    '4 / 4 slots present and non-blank',
+    '7 files hashed · fonts and logo loaded',
+    'PNG and canvas exactly 1200 × 627',
+    'every slot painted in the PNG',
+    'title 2 / 3 lines · body 204 of 312.5 px',
+    'rendered text = approved text, byte for byte',
+    'no scripts · structure matches the template',
+  ];
+  const checksEl = document.getElementById('checks');
+  const cks = F.DATA.checks.map((c, i) => F.el(checksEl, 'ck', '<span class="n">' + c + '</span><span class="pill good">pass</span><span class="m">' + FACTS[i] + '</span>'));
+  const ckPills = cks.map((c) => c.querySelector('.pill'));
+
+  /* ---- determinism ---- */
+  const det = document.getElementById('det');
+  const run1 = F.shot(det, F.ART('normal', 'insight.png'), { x: 0, y: 40, w: 800, z: 2 });
+  const run2 = F.shot(det, F.ART('normal', 'insight.png'), { x: 880, y: 40, w: 800, z: 3 });
+  const lab1 = document.getElementById('lab1'), lab2 = document.getElementById('lab2');
+  lab1.style.left = '0px'; lab1.style.top = '0px'; lab2.style.left = '880px'; lab2.style.top = '0px';
+  const diff = document.getElementById('diff');
+
+  /* ---- live ---- */
+  const site = F.site(stage, { x: 560, y: 96, w: 800, h: 840 });
+  const openNormal = site.openCard('normal');
+  const cur = K.cursor(stage);
+
+  const sub = F.subs(stage, [
+    [0.6, 5.0, 'Check 1', 'Normal approved content: four slots and four exact strings.'],
+    [5.2, 9.8, 'Bind', 'Each approved field goes into its slot as text. The brand id picks the supplied logo.'],
+    [9.9, 12.6, 'Render', 'Chromium renders the template with the real Atomity fonts and logo.'],
+    [12.7, 19.3, 'Validate', 'All 8 visual checks pass, with the measurements that prove it.'],
+    [19.5, 24.4, 'Deterministic', 'Rendered twice, the PNGs are pixel-identical. The test suite checks this every run.'],
+    [24.6, 31.3, 'Live', 'On the Vercel showcase, the normal card opens to the same 8 passing checks.'],
+  ]);
+  const end = F.endcard(stage, 'Four strings in.<br><span class="acc">The same four strings out.</span>');
+
+  const hook = document.getElementById('hook');
+  const T = {
+    hook: 0.5, panels: 5.0, fly0: 5.9, flyStep: 0.95,
+    render: 10.0, checks: 12.8, det: 19.5, live: 24.6, endIn: 31.4,
+  };
+  T.click = T.live + 3.7;
+  const DUR = 36;
+  const K0 = { t: T.live + 0.3, x: 720, y: 2250, z: 0.5 };
+  const K1 = { t: T.live + 2.3, x: 314.5, y: 1921, z: 1.3 };
+  const S = window.SITE.boxes['summary:normal'];
+  const aim = site.project(K1, S.x + 46, S.y + S.h / 2);
+  const PATH = [
+    { t: T.live + 2.4, x: 1500, y: 820 },
+    { t: T.click - 0.15, x: aim.x, y: aim.y, e: E.io4 },
+  ];
+
+  K.boot({
+    dur: DUR,
+    render(t) {
+      K.drift(atmoEl, t);
+      series.show(t);
+      sub(t);
+
+      /* hook */
+      lines(hook, t, T.hook, { step: 0.1, d: 0.8 });
+      if (t > T.panels - 0.9) linesOut(hook, t, T.panels - 0.9, { step: 0.05, d: 0.4 });
+      set(hook, { o: 1 - tr(t, T.panels - 0.45, T.panels, E.lin) });
+
+      /* fields card and wireframe */
+      const fieldsOut = tr(t, T.checks - 0.6, T.checks - 0.1, E.lin);
+      const fp = tr(t, T.panels, T.panels + 0.8, E.out5);
+      set(fieldsEl, { o: fp * (1 - fieldsOut), x: lerp(-50, 0, fp) });
+      rows.forEach((r, i) => set(r, { o: tr(t, T.panels + 0.2 + i * 0.1, T.panels + 0.7 + i * 0.1) }));
+      const wp = tr(t, T.panels + 0.2, T.panels + 1.0, E.out5);
+      set(wire, { o: wp * (1 - tr(t, T.render + 0.6, T.render + 1.0, E.lin)), s: lerp(0.95, 1, wp) });
+
+      flies.forEach(({ chip, from, to, k }, i) => {
+        const t0 = T.fly0 + i * T.flyStep;
+        const p = tr(t, t0, t0 + 0.75, E.io4);
+        const land = tr(t, t0 + 0.7, t0 + 0.95, E.lin);
+        set(chip, { o: tr(t, t0 - 0.15, t0) * (1 - land), x: lerp(from.x, to.x, p), y: lerp(from.y, to.y, p) - Math.sin(p * Math.PI) * 90, s: 1 + Math.sin(p * Math.PI) * 0.08 });
+        const r = rowOf(k);
+        set(r.querySelector('.hl'), { o: K.pulse(t, t0 - 0.2, t0 + 1.0, 0.4) });
+        const s = slotEls[k];
+        const f = tr(t, t0 + 0.75, t0 + 1.2, E.spring);
+        set(s.querySelector('.fillbg'), { o: tr(t, t0 + 0.75, t0 + 0.95) });
+        set(s.querySelector('.ok'), { o: tr(t, t0 + 0.75, t0 + 0.9), s: lerp(1.15, 1, f) });
+        s.querySelector('span').style.color = t > t0 + 0.75 ? 'var(--accent)' : '';
+      });
+      set(panel, { o: 1 });
+
+      /* the real render replaces the wireframe */
+      const pp = tr(t, T.render, T.render + 0.9, E.out5);
+      const pngOut = tr(t, T.det - 0.6, T.det - 0.1, E.lin);
+      set(png, { o: pp * (1 - pngOut), s: lerp(1.04, 1, pp) });
+
+      /* checks */
+      const cp = tr(t, T.checks, T.checks + 0.7, E.out5);
+      set(checksEl, { o: cp * (1 - tr(t, T.det - 0.6, T.det - 0.1, E.lin)), x: lerp(-50, 0, cp) });
+      cks.forEach((c, i) => set(c, { o: tr(t, T.checks + 0.3 + i * 0.22, T.checks + 0.6 + i * 0.22) }));
+      ckPills.forEach((p, i) => {
+        const t0 = T.checks + 0.5 + i * 0.22;
+        set(p, { o: tr(t, t0, t0 + 0.12), s: lerp(2, 1, tr(t, t0, t0 + 0.5, E.spring)) });
+      });
+
+      /* determinism: two runs slide together, nothing differs */
+      const dp = tr(t, T.det, T.det + 0.8, E.out5);
+      set(det, { o: dp * (1 - tr(t, T.live - 0.5, T.live, E.lin)) });
+      const merge = tr(t, T.det + 1.6, T.det + 3.0, E.io4);
+      set(run1, { x: lerp(0, 440, merge) });
+      set(run2, { x: lerp(0, -440, merge), o: lerp(1, 0.55, merge) });
+      set(lab1, { o: 1 - merge }); set(lab2, { o: 1 - merge });
+      set(diff, { o: tr(t, T.det + 2.6, T.det + 3.0), s: lerp(1.3, 1, tr(t, T.det + 2.6, T.det + 3.2, E.spring)) });
+
+      /* live: zoom into the normal card, click "Checks" */
+      site.show(t, T.live, T.endIn - 0.3);
+      site.cam(t, [K0, K1]);
+      openNormal(t, T.click + 0.05);
+      const c = K.wayp(t, PATH);
+      set(cur, { x: c.x, y: c.y, o: tr(t, T.live + 2.3, T.live + 2.6) * (1 - tr(t, T.endIn - 1.0, T.endIn - 0.6, E.lin)) });
+      K.click(cur, t, [T.click]);
+
+      end.show(t, T.endIn);
+    },
+  });
+})();
+</script>
+</body>
+</html>

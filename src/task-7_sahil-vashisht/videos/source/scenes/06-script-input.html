@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>06 — Content is text, always</title>
+<link rel="stylesheet" href="../brand.css">
+<link rel="stylesheet" href="../kit.css">
+<link rel="stylesheet" href="../film.css">
+<style>
+  #typed { position: absolute; left: 0; right: 0; top: 250px; text-align: center; z-index: 46;
+    font-family: var(--font-code); font-size: 76px; font-weight: 700; color: var(--accent); letter-spacing: -.01em; }
+  #hook { position: absolute; left: 0; right: 0; top: 420px; text-align: center; z-index: 46; }
+  #hook .h2 { font-size: 84px; }
+
+  .pane { position: absolute; top: 170px; width: 830px; height: 600px; z-index: 20; border-radius: 26px; }
+  #bad { left: 120px; background: var(--ink-1); border: 1px solid var(--line); overflow: hidden; }
+  #bad .bar { height: 60px; display: flex; align-items: center; gap: 12px; padding: 0 22px; border-bottom: 1px solid var(--line); background: rgba(255,255,255,.03);
+    font-family: var(--font-code); font-size: 18px; color: var(--mut); }
+  #dialog { position: absolute; left: 175px; top: 120px; width: 480px; padding: 28px 30px; border-radius: 16px;
+    background: #2a2b2f; border: 1px solid #44464c; box-shadow: 0 30px 70px -20px rgba(0,0,0,.9); font-size: 24px; }
+  #dialog .ok { margin-top: 24px; margin-left: auto; width: 110px; padding: 10px 0; text-align: center; border-radius: 10px; background: var(--info); color: #06122a; font-weight: 700; }
+  .net { position: absolute; left: 40px; width: 750px; padding: 14px 18px; border-radius: 12px; font-family: var(--font-code); font-size: 20px;
+    background: color-mix(in srgb, var(--bad) 10%, transparent); border: 1px solid color-mix(in srgb, var(--bad) 40%, transparent); color: var(--bad); }
+  #stamp { position: absolute; left: 220px; top: 230px; padding: 18px 40px; border: 6px solid var(--bad); border-radius: 18px;
+    font-size: 70px; font-weight: 700; color: var(--bad); letter-spacing: .02em; background: rgba(10,10,11,.75); transform-origin: center; }
+  #bad .illus { right: 22px; bottom: 18px; }
+  #goodLab { position: absolute; left: 1010px; top: 186px; z-index: 22; }
+
+  #layers { position: absolute; left: 120px; top: 170px; width: 1040px; z-index: 22; }
+  .ly { position: relative; display: flex; align-items: center; gap: 24px; height: 100px; padding: 0 30px; margin-bottom: 14px; border-radius: 20px;
+    background: var(--ink-1); border: 2px solid var(--line); will-change: transform, opacity; }
+  .ly .no { font-family: var(--font-code); font-size: 22px; font-weight: 700; color: var(--mut-2); width: 40px; }
+  .ly .nm { font-size: 32px; font-weight: 700; letter-spacing: -.02em; }
+  .ly .ds { font-family: var(--font-code); font-size: 19px; color: var(--mut); margin-left: auto; text-align: right; }
+  .ly .on { position: absolute; inset: -2px; border-radius: 20px; border: 2px solid var(--accent); background: color-mix(in srgb, var(--accent) 6%, transparent); opacity: 0; }
+  #counters { position: absolute; left: 1240px; top: 170px; width: 560px; z-index: 22; }
+  .ct { display: flex; align-items: baseline; justify-content: space-between; padding: 22px 0; border-top: 1px solid var(--line); }
+  .ct .lab { font-size: 18px; }
+  .ct .v { font-size: 76px; font-weight: 700; color: var(--accent); letter-spacing: -.03em; line-height: 1; }
+
+  #neg { left: 120px; top: 250px; width: 980px; font-size: 26px; z-index: 30; }
+  #negV { position: absolute; left: 1180px; top: 260px; display: flex; flex-direction: column; gap: 16px; align-items: flex-start; z-index: 30; }
+  #negV .verdict { font-size: 25px; }
+</style>
+</head>
+<body>
+<div id="fit"><div id="stage">
+
+  <div id="typed"></div>
+  <div id="hook">
+    <div class="h2">
+      <span class="rv"><i>is approved text.</i></span>
+      <span class="rv"><i class="acc">So it must appear as text.</i></span>
+    </div>
+  </div>
+
+  <div class="pane" id="bad">
+    <div class="bar"><div class="dot3"><span></span><span></span><span></span></div>if content were bound as markup…</div>
+    <div id="dialog">This page says<br><b style="font-size:30px">test</b><div class="ok">OK</div></div>
+    <div class="net" style="top:400px">GET https://tracker.invalid/pixel.png</div>
+    <div class="net" style="top:468px">GET https://evil.invalid/x.css</div>
+    <div id="stamp">PREVENTED</div>
+    <span class="illus">Illustration · what is prevented</span>
+  </div>
+  <div class="lab" id="goodLab">the real render · examples/html-script-input/insight.png</div>
+
+  <div id="layers"></div>
+  <div id="counters"></div>
+  <div id="negV"></div>
+
+</div></div>
+
+<script src="../brand.js"></script>
+<script src="../kit.js"></script>
+<script src="../footage/site-layout.js"></script>
+<script src="../film.js"></script>
+<script>
+(() => {
+  const stage = document.getElementById('stage');
+  const { E, tr, lerp, set, lines, linesOut } = K;
+  const atmoEl = K.atmo(stage, [
+    { x: 560, y: 140, w: 900, c: 'color-mix(in srgb, var(--accent) 11%, transparent)' },
+    { x: 80, y: 520, w: 700, c: 'color-mix(in srgb, var(--bad) 6%, transparent)' },
+  ]);
+  const series = F.series(stage, '06', 'HTML and script input');
+
+  const SCRIPT = '<script>alert("test")</' + 'script>';
+  const typed = document.getElementById('typed');
+  const hook = document.getElementById('hook');
+
+  const bad = document.getElementById('bad');
+  const dialog = document.getElementById('dialog');
+  const nets = bad.querySelectorAll('.net');
+  const stamp = document.getElementById('stamp');
+  const good = F.shot(stage, F.ART('html-script-input', 'insight.png'), { x: 1000, y: 230, w: 800, z: 21,
+    label: '<b>✓</b> status: pass · the markup is literal text' });
+  const goodLab = document.getElementById('goodLab');
+
+  /* the five independent layers (README: Security) */
+  const LY = [
+    ['01', 'Context-checked escaping', '&lt;script&gt; → text node'],
+    ['02', 'Page JavaScript disabled', 'javaScriptEnabled: false'],
+    ['03', 'Hash-pinned CSP', "script-src 'none'"],
+    ['04', 'Request allowlist', 'only design/ assets, .invalid origin'],
+    ['05', 'Structure check after render', 'DOM skeleton = template'],
+  ];
+  const layersEl = document.getElementById('layers');
+  const layers = LY.map(([n, nm, ds]) => F.el(layersEl, 'ly', '<div class="on"></div><span class="no">' + n + '</span><span class="nm">' + nm + '</span><span class="ds">' + ds + '</span>'));
+
+  /* the real security record from examples/html-script-input/report.json */
+  const CT = [['requests outside the allowlist', 0], ['alert dialogs', 0], ['CSP violations', 0], ['page errors', 0]];
+  const ctEl = document.getElementById('counters');
+  const cts = CT.map(([lab, v]) => F.el(ctEl, 'ct', '<span class="lab">' + lab + '</span><span class="v">' + v + '</span>'));
+
+  /* negative control from tests/render.test.ts */
+  const neg = F.el(stage, 'codebox', '<span class="title">tests/render.test.ts · negative control</span>' +
+    '<span class="jl"><span class="jp">// switch escaping off on purpose</span></span>' +
+    '<span class="jl">renderFixture(<span class="js">"html-script-input"</span>, {</span>' +
+    '<span class="jl">  binder: <span class="bad">unescapedBinder</span>,</span>' +
+    '<span class="jl">});</span>' +
+    '<span class="jl"> </span>' +
+    '<span class="jl"><span class="jp">// the other layers keep it inert,</span></span>' +
+    '<span class="jl"><span class="jp">// and the validator still fails it</span></span>');
+  neg.id = 'neg';
+  const negLines = neg.querySelectorAll('.jl');
+  const negV = document.getElementById('negV');
+  const NV = ['UNSAFE_MARKUP', 'APPROVED_TEXT_CHANGED', 'UNEXPECTED_ASSET_REQUEST'].map((c) => F.el(negV, 'verdict fail', '<span class="dotv"></span>' + c));
+
+  /* live */
+  const site = F.site(stage, { x: 560, y: 96, w: 800, h: 840 });
+  const openCard = site.openCard('html-script-input');
+  const cur = K.cursor(stage);
+
+  const sub = F.subs(stage, [
+    [0.6, 5.4, 'Check 5', 'A script tag inside approved copy is content. It must be shown, never run.'],
+    [5.6, 13.0, 'Shown, not run', 'Left: what unescaped markup could do (illustration). Right: the real render, just text.'],
+    [13.2, 21.2, '5 layers', 'Five independent layers. The real report: 0 requests, 0 dialogs, 0 CSP violations.'],
+    [21.4, 25.8, 'Negative control', 'Escaping switched off on purpose: the other layers hold, and validation still fails it.'],
+    [26.0, 31.4, 'Live', 'Live: the script-input card passes all 8 checks, its markup shown as plain text.'],
+  ]);
+  const end = F.endcard(stage, 'Content is text.<br><span class="acc">Always.</span>');
+
+  const T = { type: 0.4, hook: 2.4, split: 5.6, dialog: 6.6, net: 7.4, stamp: 9.0, good: 6.2, layers: 13.2, lStep: 0.9, neg: 21.4, live: 26.0, endIn: 31.8 };
+  T.click = T.live + 3.2;
+  const DUR = 36;
+  const BX = window.SITE.boxes['card:html-script-input'];
+  const K0 = { t: T.live + 0.3, x: 720, y: 2250, z: 0.5 };
+  const K1 = { t: T.live + 2.0, x: BX.x + BX.w / 2, y: BX.y + 289, z: 1.28 };
+  const S = window.SITE.boxes['summary:html-script-input'];
+  const aim = site.project(K1, S.x + 46, S.y + S.h / 2);
+  const PATH = [{ t: T.live + 2.1, x: 1500, y: 820 }, { t: T.click - 0.15, x: aim.x, y: aim.y, e: E.io4 }];
+
+  K.boot({
+    dur: DUR,
+    render(t) {
+      K.drift(atmoEl, t);
+      series.show(t);
+      sub(t);
+
+      /* hook: the string types itself out, then the line that matters */
+      const hOut = tr(t, T.split - 0.5, T.split, E.lin);
+      K.type(typed, t, T.type, 18, SCRIPT);
+      set(typed, { o: tr(t, T.type, T.type + 0.2) * (1 - hOut), y: hOut * -40 });
+      lines(hook, t, T.hook, { step: 0.12, d: 0.8 });
+      set(hook, { o: 1 - hOut });
+
+      /* split: illustration vs the real render */
+      const sOut = tr(t, T.layers - 0.6, T.layers - 0.1, E.lin);
+      const bp = tr(t, T.split, T.split + 0.8, E.out5);
+      set(bad, { o: bp * (1 - sOut), x: lerp(-60, 0, bp) });
+      set(dialog, { o: tr(t, T.dialog, T.dialog + 0.2), s: lerp(0.8, 1, tr(t, T.dialog, T.dialog + 0.5, E.spring)) });
+      nets.forEach((n, i) => set(n, { o: tr(t, T.net + i * 0.4, T.net + i * 0.4 + 0.3), x: lerp(-30, 0, tr(t, T.net + i * 0.4, T.net + i * 0.4 + 0.5, E.out5)) }));
+      const st = tr(t, T.stamp, T.stamp + 0.55, E.spring);
+      set(stamp, { o: tr(t, T.stamp, T.stamp + 0.1), s: lerp(2.4, 1, st), r: lerp(-18, -8, st) });
+      const gp = tr(t, T.good, T.good + 0.9, E.out5);
+      set(good, { o: gp * (1 - sOut), x: lerp(60, 0, gp) });
+      set(goodLab, { o: gp * (1 - sOut) });
+
+      /* the layers light up one by one: each would stop it on its own */
+      const lOut = tr(t, T.neg - 0.6, T.neg - 0.1, E.lin);
+      set(layersEl, { o: tr(t, T.layers, T.layers + 0.5) * (1 - lOut) });
+      layers.forEach((l, i) => {
+        const t0 = T.layers + 0.6 + i * T.lStep;
+        set(l, { x: lerp(-40, 0, tr(t, T.layers + i * 0.1, T.layers + 0.6 + i * 0.1, E.out5)) });
+        set(l.querySelector('.on'), { o: tr(t, t0, t0 + 0.2), s: lerp(1.04, 1, tr(t, t0, t0 + 0.5, E.spring)) });
+      });
+      set(ctEl, { o: tr(t, T.layers + 0.8, T.layers + 1.4) * (1 - lOut) });
+      cts.forEach((c, i) => set(c, { o: tr(t, T.layers + 1.2 + i * 0.5, T.layers + 1.6 + i * 0.5), x: lerp(40, 0, tr(t, T.layers + 1.2 + i * 0.5, T.layers + 1.9 + i * 0.5, E.out5)) }));
+
+      /* negative control */
+      const nOut = tr(t, T.live - 0.6, T.live - 0.1, E.lin);
+      set(neg, { o: tr(t, T.neg, T.neg + 0.5) * (1 - nOut) });
+      negLines.forEach((l, i) => set(l, { o: tr(t, T.neg + 0.3 + i * 0.22, T.neg + 0.55 + i * 0.22) }));
+      NV.forEach((v, i) => {
+        const t0 = T.neg + 2.2 + i * 0.35;
+        set(v, { o: tr(t, t0, t0 + 0.12) * (1 - nOut), s: lerp(1.8, 1, tr(t, t0, t0 + 0.55, E.spring)) });
+      });
+
+      /* live */
+      site.show(t, T.live, T.endIn - 0.3);
+      site.cam(t, [K0, K1]);
+      openCard(t, T.click + 0.05);
+      const c = K.wayp(t, PATH);
+      set(cur, { x: c.x, y: c.y, o: tr(t, T.live + 2.0, T.live + 2.3) * (1 - tr(t, T.endIn - 1.0, T.endIn - 0.6, E.lin)) });
+      K.click(cur, t, [T.click]);
+
+      end.show(t, T.endIn);
+    },
+  });
+})();
+</script>
+</body>
+</html>

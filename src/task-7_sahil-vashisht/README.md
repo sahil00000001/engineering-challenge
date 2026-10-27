@@ -18,6 +18,10 @@ Design configuration ────┘        (refuse, don't render)      (text on
 - Rendered example: [`examples/normal/insight.png`](examples/normal/insight.png) and
   [`report.json`](examples/normal/report.json).
 - All examples, including failures: [`examples/README.md`](examples/README.md).
+- Seven captioned explainer films, one overview plus one per required check:
+  [`videos/`](videos/README.md). They are also playable on the live showcase. They are
+  extra material for reviewers, rendered from code (`videos/source/`), and the challenge
+  does not require them.
 
 ## Quick start
 

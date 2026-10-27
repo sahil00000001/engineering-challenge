@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>04 — Overflow is reported, never hidden</title>
+<link rel="stylesheet" href="../brand.css">
+<link rel="stylesheet" href="../kit.css">
+<link rel="stylesheet" href="../film.css">
+<style>
+  #hook { position: absolute; left: 120px; top: 270px; width: 1100px; z-index: 46; }
+  #hook .h1 { font-size: 100px; line-height: .98; }
+  #never { position: absolute; left: 120px; top: 720px; display: flex; gap: 18px; z-index: 46; }
+  .nv { position: relative; padding: 14px 24px; border-radius: 14px; font-family: var(--font-code); font-size: 26px;
+    background: rgba(255,255,255,.04); border: 1px solid var(--line); color: var(--txt); will-change: transform, opacity; }
+  .nv .strike { position: absolute; left: 14px; right: 14px; top: 50%; height: 3px; background: var(--bad); transform-origin: left center; }
+
+  /* the vessel: the body region at 1.2x the template (312.5 px region, 22/34 px type) */
+  #vessel { position: absolute; left: 120px; top: 150px; width: 1060px; height: 760px; z-index: 20; }
+  #region { position: absolute; left: 0; top: 0; width: 1005px; height: 395px; border-radius: 16px;
+    border: 2px solid var(--accent); background: color-mix(in srgb, var(--accent) 5%, transparent); }
+  #regionLab { position: absolute; left: 14px; top: -34px; font-family: var(--font-code); font-size: 18px; font-weight: 700; color: var(--accent); letter-spacing: .06em; }
+  #edge { position: absolute; left: -20px; width: 1045px; top: 559px; border-top: 3px dashed var(--warn); }
+  #edgeLab { position: absolute; right: 40px; top: 570px; font-family: var(--font-code); font-size: 18px; font-weight: 700; color: var(--warn); letter-spacing: .06em; }
+  .bd { position: absolute; left: 20px; top: 18px; width: 965px; white-space: pre-line;
+    font-family: var(--font-serif); font-size: 26.4px; line-height: 40.8px; color: #e7e3d5; }
+  .bd.red { color: var(--bad); }
+
+  #gauge { position: absolute; left: 1250px; top: 168px; width: 34px; height: 571px; border-radius: 17px;
+    background: rgba(255,255,255,.05); border: 1px solid var(--line); overflow: hidden; z-index: 20; }
+  #gfill { position: absolute; left: 0; top: 0; width: 100%; background: var(--accent); }
+  #gred { position: absolute; left: 0; top: 375px; width: 100%; background: var(--bad); }
+  #gmark { position: absolute; left: 1236px; width: 62px; top: 543px; border-top: 3px solid var(--txt); z-index: 21; }
+  #nums { position: absolute; left: 1330px; top: 168px; width: 470px; z-index: 21; }
+  .n { padding: 16px 0 14px; border-top: 1px solid var(--line); }
+  .n .v { font-size: 58px; font-weight: 700; letter-spacing: -.03em; line-height: 1.05; margin-top: 4px; }
+  .n .v small { font-size: 24px; color: var(--mut); font-weight: 500; letter-spacing: 0; }
+  #verdicts { position: absolute; left: 1250px; top: 790px; z-index: 30; display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+  #verdicts .verdict { font-size: 26px; padding: 12px 24px; }
+
+  #css { left: 120px; top: 250px; width: 900px; font-size: 30px; line-height: 1.6; z-index: 30; }
+  #clipMsg { position: absolute; left: 1080px; top: 320px; width: 720px; z-index: 30; }
+  #clipMsg .msg { font-family: var(--font-code); font-size: 22px; color: var(--mut); margin-top: 22px; line-height: 1.5; }
+</style>
+</head>
+<body>
+<div id="fit"><div id="stage">
+
+  <div id="hook">
+    <div class="kick rv" style="margin-bottom:28px"><i>Required check 3 · long body</i></div>
+    <div class="h1">
+      <span class="rv"><i>When the body runs long,</i></span>
+      <span class="rv"><i class="acc">no word may vanish.</i></span>
+    </div>
+  </div>
+  <div id="never"></div>
+
+  <div id="vessel">
+    <div id="region"><span id="regionLab">body region · 312.5 px</span></div>
+    <div id="edge"></div><div id="edgeLab">canvas edge · 627 px</div>
+    <div class="bd" id="bd"></div>
+    <div class="bd red" id="bdRed"></div>
+  </div>
+  <div id="gauge"><div id="gfill"></div><div id="gred"></div></div>
+  <div id="gmark"></div>
+  <div id="nums"></div>
+  <div id="verdicts"></div>
+  <div id="clipMsg"></div>
+
+</div></div>
+
+<script src="../brand.js"></script>
+<script src="../kit.js"></script>
+<script src="../footage/site-layout.js"></script>
+<script src="../film.js"></script>
+<script>
+(() => {
+  const stage = document.getElementById('stage');
+  const { E, tr, lerp, set, lines, linesOut } = K;
+  const atmoEl = K.atmo(stage, [
+    { x: 200, y: 300, w: 900, c: 'color-mix(in srgb, var(--accent) 10%, transparent)' },
+    { x: 1200, y: 600, w: 700, c: 'color-mix(in srgb, var(--warn) 6%, transparent)' },
+  ]);
+  const series = F.series(stage, '04', 'Long body');
+  const D = F.DATA.longBody;
+
+  /* what the template never does */
+  const NEVER = ['overflow: hidden', 'text-overflow: ellipsis', '-webkit-line-clamp'];
+  const neverEl = document.getElementById('never');
+  const nvs = NEVER.map((n) => F.el(neverEl, 'nv', n + '<span class="strike"></span>'));
+
+  /* the real long body (fixtures/long-body.json) */
+  const BODY = 'Fictional Provider A opened a sovereign cloud region in Frankfurt on 3 October 2026, with 42 managed services at launch and operations run under EU jurisdiction. The provider states that customer data, metadata and support access stay inside the European Union, and that the region is operated by a separate legal entity with EU-resident staff.\n\nTeams holding data under residency rules can now weigh this region against their current hosting at the next placement review. The comparison is not only about location: service coverage, latency to existing systems, exit terms and the cost of moving data all change which workloads are good candidates.\n\nThe announcement does not say when the remaining services in the provider\'s catalogue will reach the region, so plans that depend on them should treat availability as unconfirmed until it is published.';
+  const bd = document.getElementById('bd'), bdRed = document.getElementById('bdRed');
+  bd.textContent = BODY; bdRed.textContent = BODY;
+  const vessel = document.getElementById('vessel');
+  const REGION = 375, CONTENT = 571.2; // 312.5 and 476 px, x1.2
+
+  const numsEl = document.getElementById('nums');
+  ['content height', 'body region', 'overflow', 'lines'].forEach((lab, i) =>
+    F.el(numsEl, 'n', '<div class="lab">' + lab + '</div><div class="v" id="n' + i + '"></div>'));
+  const n0 = document.getElementById('n0'), n1 = document.getElementById('n1'), n2 = document.getElementById('n2'), n3 = document.getElementById('n3');
+  n1.innerHTML = '312.5 <small>px</small>';
+  const gfill = document.getElementById('gfill'), gred = document.getElementById('gred');
+  const gauge = document.getElementById('gauge'), gmark = document.getElementById('gmark');
+  const vEl = document.getElementById('verdicts');
+  const vFail = F.el(vEl, 'verdict fail', '<span class="dotv"></span>BODY_OVERFLOW');
+  const vKeep = F.el(vEl, 'verdict pass', '<span class="dotv"></span>approved_text_preserved: pass');
+
+  /* the live report.json on Vercel */
+  const rep = F.site(stage, { x: 120, y: 110, w: 1080, h: 820, src: '../footage/report-long-body.png', imgW: 1100,
+    path: '<span style="color:var(--mut-2)">/…/long-body/report.json</span>' });
+  const png = F.shot(stage, F.ART('long-body', 'insight.failed.png'), { x: 1260, y: 250, w: 540,
+    label: '<b>✕</b> long-body/insight.failed.png' });
+  png.querySelector('.label').classList.add('bad');
+
+  /* even a template that hides the overflow is caught (tests/render.test.ts) */
+  const css = F.el(stage, 'codebox', null);
+  css.id = 'css';
+  css.innerHTML = '<span class="title">a template variant from the test suite</span>' +
+    '<span class="jl"><span class="jk">.insight__body</span> <span class="jp">{</span></span>' +
+    '<span class="jl">  max-height: <span class="jn">40px</span>;</span>' +
+    '<span class="jl">  overflow: <span class="bad">hidden</span>;</span>' +
+    '<span class="jl"><span class="jp">}</span></span>';
+  const cssLines = css.querySelectorAll('.jl');
+  const clipMsg = document.getElementById('clipMsg');
+  const vClip = F.el(clipMsg, 'verdict fail', '<span class="dotv"></span>TEXT_CLIPPED');
+  const msg = F.el(clipMsg, 'msg', 'clipped_by: p.insight__body<br>(overflow: hidden hidden)');
+
+  const sub = F.subs(stage, [
+    [0.6, 5.4, 'Check 3', 'A body longer than its region. Nothing is clipped, ellipsised or line-clamped.'],
+    [5.6, 11.6, 'Measure', 'The region holds 312.5 px. The approved body needs 476 px, past the canvas edge.'],
+    [11.8, 15.4, 'Verdict', '<code>BODY_OVERFLOW</code>, and every word is still in the document: <code>approved_text_preserved</code> passes.'],
+    [15.6, 22.4, 'Live report', 'The live <code>report.json</code> on Vercel records the failure with its exact measurements.'],
+    [22.6, 29.0, 'Hidden overflow', 'Even a template that tries to hide the overflow is caught as <code>TEXT_CLIPPED</code>.'],
+  ]);
+  const end = F.endcard(stage, 'Overflow is reported.<br><span class="acc">Never hidden.</span>');
+
+  const hook = document.getElementById('hook');
+  const T = {
+    hook: 0.5, never: 1.6, strike: 3.0,
+    vessel: 5.6, pour0: 6.2, pour1: 11.0, verdict: 11.8, keep: 12.6,
+    rep: 15.6, css: 22.6, clip: 25.0, endIn: 29.4,
+  };
+  const DUR = 34;
+  const RK = [
+    { t: T.rep + 0.2, x: 550, y: 330, z: 0.95 },
+    { t: T.rep + 2.6, x: 400, y: 565, z: 1.35 },
+  ];
+
+  K.boot({
+    dur: DUR,
+    render(t) {
+      K.drift(atmoEl, t);
+      series.show(t);
+      sub(t);
+
+      /* hook */
+      lines(hook, t, T.hook, { step: 0.12, d: 0.8 });
+      if (t > T.vessel - 0.9) linesOut(hook, t, T.vessel - 0.9, { step: 0.05, d: 0.4 });
+      set(hook, { o: 1 - tr(t, T.vessel - 0.45, T.vessel, E.lin) });
+      nvs.forEach((el, i) => {
+        const p = tr(t, T.never + i * 0.25, T.never + i * 0.25 + 0.6, E.out5);
+        set(el, { o: p * (1 - tr(t, T.vessel - 0.6, T.vessel - 0.1, E.lin)), y: lerp(30, 0, p) });
+        const s0 = T.strike + i * 0.4;
+        set(el.querySelector('.strike'), { sx: tr(t, s0, s0 + 0.35, E.out4) });
+        el.style.color = t > s0 + 0.2 ? 'var(--mut)' : '';
+      });
+
+      /* the pour: text fills the region, then keeps going, never clipped */
+      const vOut = tr(t, T.rep - 0.6, T.rep - 0.1, E.lin);
+      set(vessel, { o: tr(t, T.vessel, T.vessel + 0.6) * (1 - vOut) });
+      const fillP = tr(t, T.pour0, T.pour1, E.io);
+      const h = fillP * CONTENT;
+      bd.style.clipPath = 'inset(0 0 ' + Math.max(0, CONTENT - h) + 'px 0)';
+      bdRed.style.clipPath = 'inset(' + REGION + 'px 0 ' + Math.max(0, CONTENT - h) + 'px 0)';
+      set(bdRed, { o: h > REGION ? 1 : 0 });
+      set(gauge, { o: tr(t, T.vessel + 0.2, T.vessel + 0.8) * (1 - vOut) });
+      set(gmark, { o: tr(t, T.vessel + 0.4, T.vessel + 0.9) * (1 - vOut) });
+      set(gfill, { h: Math.min(h, REGION) });
+      set(gred, { h: Math.max(0, h - REGION) });
+      set(numsEl, { o: tr(t, T.vessel + 0.3, T.vessel + 0.9) * (1 - vOut), x: lerp(40, 0, tr(t, T.vessel + 0.3, T.vessel + 1.1, E.out5)) });
+      n0.innerHTML = (fillP * D.contentPx).toFixed(fillP < 1 ? 0 : 0) + ' <small>px</small>';
+      const ov = Math.max(0, fillP * D.contentPx - D.regionPx);
+      n2.innerHTML = '+' + (fillP >= 1 ? D.overflowPx : Math.round(ov)) + ' <small>px</small>';
+      n2.style.color = ov > 0 ? 'var(--bad)' : 'var(--mut)';
+      n3.innerHTML = Math.round(fillP * D.lines) + ' <small>layout lines</small>';
+      set(vFail, { o: tr(t, T.verdict, T.verdict + 0.15) * (1 - vOut), s: lerp(1.9, 1, tr(t, T.verdict, T.verdict + 0.6, E.spring)) });
+      set(vKeep, { o: tr(t, T.keep, T.keep + 0.15) * (1 - vOut), s: lerp(1.6, 1, tr(t, T.keep, T.keep + 0.6, E.spring)) });
+
+      /* the live report.json, panned to the failure */
+      rep.show(t, T.rep, T.css - 0.5);
+      rep.cam(t, RK);
+      const pp = tr(t, T.rep + 0.6, T.rep + 1.4, E.out5);
+      set(png, { o: pp * (1 - tr(t, T.css - 0.5, T.css, E.lin)), x: lerp(40, 0, pp) });
+
+      /* hidden overflow is still caught */
+      const cOut = tr(t, T.endIn - 0.6, T.endIn, E.lin);
+      set(css, { o: tr(t, T.css, T.css + 0.6) * (1 - cOut), y: lerp(40, 0, tr(t, T.css, T.css + 0.8, E.out5)) });
+      cssLines.forEach((l, i) => set(l, { o: tr(t, T.css + 0.4 + i * 0.35, T.css + 0.7 + i * 0.35) }));
+      set(vClip, { o: tr(t, T.clip, T.clip + 0.15) * (1 - cOut), s: lerp(1.9, 1, tr(t, T.clip, T.clip + 0.6, E.spring)) });
+      set(msg, { o: tr(t, T.clip + 0.6, T.clip + 1.0) * (1 - cOut) });
+
+      end.show(t, T.endIn);
+    },
+  });
+})();
+</script>
+</body>
+</html>

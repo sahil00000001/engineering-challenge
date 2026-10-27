@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>07 — Approved means exactly this text</title>
+<link rel="stylesheet" href="../brand.css">
+<link rel="stylesheet" href="../kit.css">
+<link rel="stylesheet" href="../film.css">
+<style>
+  #hook { position: absolute; left: 120px; top: 290px; width: 1400px; z-index: 46; }
+  #hook .h1 { font-size: 118px; line-height: .96; }
+  #hook .bad { color: var(--bad); }
+
+  #edit { position: absolute; left: 0; right: 0; top: 270px; text-align: center; z-index: 22;
+    font-family: var(--font-serif); font-size: 50px; color: #e7e3d5; }
+  #edit .num { position: relative; display: inline-block; padding: 0 4px; border-radius: 6px; }
+  #edit .sel { position: absolute; inset: -4px -2px; border-radius: 8px; background: color-mix(in srgb, var(--info) 40%, transparent); }
+  #editLab { position: absolute; left: 0; right: 0; top: 200px; text-align: center; z-index: 22; }
+
+  #digest { position: absolute; left: 120px; top: 190px; width: 1680px; z-index: 22; }
+  .drow { margin-bottom: 30px; }
+  .drow .lab { margin-bottom: 12px; }
+  .hex { display: flex; flex-wrap: nowrap; font-family: var(--font-code); font-size: 38px; font-weight: 600; letter-spacing: .01em; }
+  .hex span { display: inline-block; width: 25px; text-align: center; }
+  .hex span.g { margin-right: 14px; }
+  #neq { position: absolute; left: 0; top: 360px; width: 1680px; display: flex; align-items: center; gap: 30px; }
+  #neq .big { font-size: 110px; font-weight: 700; color: var(--bad); line-height: 1; }
+  #neq .txt { font-size: 34px; font-weight: 600; }
+  #neq .txt small { display: block; font-family: var(--font-code); font-size: 20px; color: var(--mut); margin-top: 8px; font-weight: 500; }
+  #dv { position: absolute; left: 0; top: 520px; display: flex; gap: 18px; align-items: center; }
+
+  #ren { position: absolute; left: 120px; top: 200px; width: 1680px; z-index: 22; }
+  .rrow { display: flex; align-items: baseline; gap: 30px; padding: 26px 30px; margin-bottom: 18px; border-radius: 20px; background: var(--ink-1); border: 1px solid var(--line); }
+  .rrow .lab { width: 230px; flex: none; }
+  .rrow .x { font-family: var(--font-code); font-size: 36px; }
+  .rrow .x i { font-style: normal; padding: 0 3px; border-radius: 6px; }
+  #renV { position: absolute; left: 0; top: 330px; }
+
+  #css { position: absolute; left: 120px; top: 190px; width: 1680px; z-index: 22; }
+  #cssTitle { font-size: 64px; font-weight: 700; letter-spacing: -.02em; line-height: 1.1; width: 1500px; padding: 30px 36px; border-radius: 22px; background: #f6f4ec; color: #030303; }
+  #cssRule { display: inline-block; margin-top: 30px; padding: 14px 26px; border-radius: 14px; font-family: var(--font-code); font-size: 28px; color: var(--bad);
+    background: color-mix(in srgb, var(--bad) 12%, transparent); border: 2px solid color-mix(in srgb, var(--bad) 50%, transparent); }
+  #cssV { display: inline-block; margin-left: 24px; vertical-align: middle; }
+  #also { margin-top: 30px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  #also .chip { font-family: var(--font-code); font-size: 21px; padding: 10px 18px; }
+</style>
+</head>
+<body>
+<div id="fit"><div id="stage">
+
+  <div id="hook">
+    <div class="kick rv" style="margin-bottom:28px"><i>Required check 6 · changed approved text</i></div>
+    <div class="h1">
+      <span class="rv"><i>42 became <span class="bad">47</span>.</i></span>
+      <span class="rv"><i class="acc">Nobody approved that.</i></span>
+    </div>
+  </div>
+
+  <div class="lab" id="editLab">fixtures/changed-after-approval.json · content.body</div>
+  <div id="edit">…3 October 2026, with <span class="num" id="num"><span class="sel" id="sel"></span><span id="numT">42</span></span> managed services at launch…</div>
+
+  <div id="digest">
+    <div class="drow"><div class="lab">approval.content_sha256 · recorded when the text was approved</div><div class="hex" id="hexA"></div></div>
+    <div class="drow"><div class="lab">sha256 of the slots · computed at render time</div><div class="hex" id="hexB"></div></div>
+    <div id="neq"><span class="big">≠</span><div class="txt"><span id="ndiff">0</span> of 64 characters differ<small>a single changed character changes the whole digest</small></div></div>
+    <div id="dv"></div>
+  </div>
+
+  <div id="ren">
+    <div class="lab" style="margin-bottom:18px">tests/render.test.ts · a renderer that rewrites a number</div>
+    <div class="rrow"><span class="lab">approved</span><span class="x" id="rA"></span></div>
+    <div class="rrow"><span class="lab">rendered DOM</span><span class="x" id="rB"></span></div>
+    <div id="renV"></div>
+  </div>
+
+  <div id="css">
+    <div class="lab" style="margin-bottom:18px">a template variant that only changes CSS</div>
+    <div id="cssTitle">A new sovereign region changes where regulated workloads can run</div>
+    <div><span id="cssRule">.insight__title { text-transform: uppercase }</span><span id="cssV"></span></div>
+    <div id="also"><span class="lab" style="margin-right:6px">also caught:</span></div>
+  </div>
+
+</div></div>
+
+<script src="../brand.js"></script>
+<script src="../kit.js"></script>
+<script src="../footage/site-layout.js"></script>
+<script src="../film.js"></script>
+<script>
+(() => {
+  const stage = document.getElementById('stage');
+  const { E, tr, lerp, set, lines, linesOut } = K;
+  const atmoEl = K.atmo(stage, [
+    { x: 200, y: 160, w: 900, c: 'color-mix(in srgb, var(--bad) 7%, transparent)' },
+    { x: 1100, y: 520, w: 760, c: 'color-mix(in srgb, var(--accent) 9%, transparent)' },
+  ]);
+  const series = F.series(stage, '07', 'Changed approved text');
+  const DG = F.DATA.digest;
+
+  /* ---- the edit ---- */
+  const editEl = document.getElementById('edit'), editLab = document.getElementById('editLab');
+  const numT = document.getElementById('numT'), sel = document.getElementById('sel'), num = document.getElementById('num');
+  const cur = K.cursor(stage);
+
+  /* ---- the digests: real values from examples/changed-after-approval/report.json ---- */
+  const mkHex = (el, s) => [...s].map((ch, i) => {
+    const sp = document.createElement('span');
+    sp.textContent = ch;
+    if (i % 16 === 15 && i < 63) sp.className = 'g';
+    el.appendChild(sp);
+    return sp;
+  });
+  const hexA = mkHex(document.getElementById('hexA'), DG.recorded);
+  const hexB = mkHex(document.getElementById('hexB'), DG.computed);
+  const differs = [...DG.computed].map((c, i) => c !== DG.recorded[i]);
+  const nDiff = differs.filter(Boolean).length;
+  const HEX = '0123456789abcdef';
+  const digest = document.getElementById('digest');
+  const neq = document.getElementById('neq'), ndiff = document.getElementById('ndiff');
+  const dv = document.getElementById('dv');
+  const vDig = F.el(dv, 'verdict fail', '<span class="dotv"></span>APPROVAL_DIGEST_MISMATCH');
+  const vNoPng = F.el(dv, 'verdict warn', '<span class="dotv"></span>refused before rendering · no PNG');
+
+  /* ---- the renderer that rewrites (the real excerpt from the test's report) ---- */
+  const A = 'October 2026, with 42 managed services a', B = 'October 2026, with 47 managed services a';
+  const at = [...A].findIndex((c, i) => c !== B[i]);
+  const hl = (s, cls) => F.esc(s.slice(0, at)) + '<i style="background:' + cls + '">' + s[at] + '</i>' + F.esc(s.slice(at + 1));
+  document.getElementById('rA').innerHTML = hl(A, 'color-mix(in srgb, var(--accent) 30%, transparent)');
+  document.getElementById('rB').innerHTML = hl(B, 'color-mix(in srgb, var(--bad) 40%, transparent)');
+  const ren = document.getElementById('ren');
+  const rrows = ren.querySelectorAll('.rrow');
+  const vRen = F.el(document.getElementById('renV'), 'verdict fail', '<span class="dotv"></span>APPROVED_TEXT_CHANGED · slot: body');
+
+  /* ---- CSS that changes how the text reads ---- */
+  const cssEl = document.getElementById('css');
+  const cssTitle = document.getElementById('cssTitle'), cssRule = document.getElementById('cssRule');
+  const vCss = F.el(document.getElementById('cssV'), 'verdict fail', '<span class="dotv"></span>TEXT_ALTERED_BY_STYLE');
+  const alsoEl = document.getElementById('also');
+  const ALSO = ['::first-line', 'font-variant-caps', 'direction: rtl', 'unicode-bidi: bidi-override', '-webkit-text-security', '::before content'];
+  const also = ALSO.map((a) => F.el(alsoEl, 'chip', a));
+
+  /* ---- the live report.json ---- */
+  const rep = F.site(stage, { x: 160, y: 110, w: 1600, h: 820, src: '../footage/report-changed-after-approval.png', imgW: 1100,
+    path: '<span style="color:var(--mut-2)">/…/changed-after-approval/report.json</span>' });
+
+  const sub = F.subs(stage, [
+    [0.6, 5.0, 'Check 6', 'Someone changes a number after the content was approved.'],
+    [5.2, 9.6, 'The edit', '<code>42</code> becomes <code>47</code> in the body. The approval record still holds the old digest.'],
+    [9.8, 17.2, 'Digest', 'The SHA-256 of the slots no longer matches the recorded one, so it is refused before any render.'],
+    [17.4, 22.4, 'Renderer', 'If a renderer rewrote the text instead, the DOM check catches it and shows exactly where.'],
+    [22.6, 28.2, 'Style', 'CSS that changes how the text reads (uppercase, small caps, bidi tricks) is caught too.'],
+    [28.4, 32.6, 'Live report', 'The live <code>report.json</code> on Vercel keeps both digests side by side for audit.'],
+  ]);
+  const end = F.endcard(stage, 'Approved means<br><span class="acc">exactly this text.</span>');
+
+  const hook = document.getElementById('hook');
+  const T = {
+    hook: 0.5, edit: 5.2, select: 6.6, typeAt: 7.6,
+    digest: 9.8, scramble1: 11.6, settle1: 12.8, compare: 13.0, verdict: 14.8,
+    ren: 17.4, renV: 19.4, css: 22.6, cssOn: 24.0, also: 25.4,
+    rep: 28.4, endIn: 32.8,
+  };
+  const DUR = 37;
+  const RK = [{ t: T.rep + 0.2, x: 550, y: 320, z: 1.1 }, { t: T.rep + 2.2, x: 470, y: 505, z: 1.7 }];
+
+  K.boot({
+    dur: DUR,
+    render(t) {
+      K.drift(atmoEl, t);
+      series.show(t);
+      sub(t);
+
+      lines(hook, t, T.hook, { step: 0.12, d: 0.8 });
+      if (t > T.edit - 0.9) linesOut(hook, t, T.edit - 0.9, { step: 0.05, d: 0.4 });
+      set(hook, { o: 1 - tr(t, T.edit - 0.45, T.edit, E.lin) });
+
+      /* the edit: the cursor selects 42 and types 47 */
+      const eOut = tr(t, T.digest - 0.6, T.digest - 0.1, E.lin);
+      set(editEl, { o: tr(t, T.edit, T.edit + 0.6) * (1 - eOut), y: lerp(30, 0, tr(t, T.edit, T.edit + 0.8, E.out5)) });
+      set(editLab, { o: tr(t, T.edit + 0.2, T.edit + 0.7) * (1 - eOut) });
+      const r = num.getBoundingClientRect();
+      const tx = r.left + r.width / 2 - 6, ty = r.top + r.height - 4;
+      const c = K.wayp(t, [{ t: T.edit + 0.6, x: 1500, y: 760 }, { t: T.select - 0.1, x: tx, y: ty, e: E.io4 }]);
+      set(cur, { x: c.x, y: c.y, o: tr(t, T.edit + 0.5, T.edit + 0.8) * (1 - tr(t, T.typeAt + 0.9, T.typeAt + 1.3, E.lin)) });
+      K.click(cur, t, [T.select, T.select + 0.18]);
+      set(sel, { o: t >= T.select && t < T.typeAt ? 1 : 0 });
+      numT.textContent = t >= T.typeAt ? '47' : '42';
+      numT.style.color = t >= T.typeAt ? 'var(--bad)' : '';
+      set(num, { s: 1 + K.pulse(t, T.typeAt - 0.05, T.typeAt + 0.4, 0.1) * 0.25 });
+
+      /* the digests: computed one scrambles, settles to the real value, then compares */
+      const dOut = tr(t, T.ren - 0.6, T.ren - 0.1, E.lin);
+      set(digest, { o: tr(t, T.digest, T.digest + 0.6) * (1 - dOut) });
+      hexA.forEach((s, i) => set(s, { o: tr(t, T.digest + 0.2 + i * 0.012, T.digest + 0.45 + i * 0.012) }));
+      const frame = Math.floor(t * 30);
+      hexB.forEach((s, i) => {
+        const settleAt = T.scramble1 + (i / 64) * (T.settle1 - T.scramble1);
+        s.textContent = t >= settleAt ? DG.computed[i] : HEX[Math.floor(K.rnd(i * 31 + frame, 7) * 16)];
+        set(s, { o: tr(t, T.digest + 0.6, T.digest + 0.9) });
+        const sweep = T.compare + (i / 64) * 1.4;
+        const on = t >= sweep;
+        s.style.color = on ? (differs[i] ? 'var(--bad)' : 'var(--accent)') : 'var(--mut)';
+        hexA[i].style.color = on ? (differs[i] ? 'var(--txt)' : 'var(--accent)') : '';
+      });
+      let shown = 0;
+      differs.forEach((d, i) => { if (d && t >= T.compare + (i / 64) * 1.4) shown++; });
+      ndiff.textContent = shown;
+      set(neq, { o: tr(t, T.compare, T.compare + 0.4) });
+      set(vDig, { o: tr(t, T.verdict, T.verdict + 0.15), s: lerp(1.9, 1, tr(t, T.verdict, T.verdict + 0.6, E.spring)) });
+      set(vNoPng, { o: tr(t, T.verdict + 0.5, T.verdict + 0.65), s: lerp(1.6, 1, tr(t, T.verdict + 0.5, T.verdict + 1.1, E.spring)) });
+
+      /* the renderer rewrite */
+      const rOut = tr(t, T.css - 0.6, T.css - 0.1, E.lin);
+      set(ren, { o: tr(t, T.ren, T.ren + 0.6) * (1 - rOut) });
+      rrows.forEach((rw, i) => set(rw, { o: tr(t, T.ren + 0.3 + i * 0.5, T.ren + 0.7 + i * 0.5), x: lerp(-40, 0, tr(t, T.ren + 0.3 + i * 0.5, T.ren + 1.0 + i * 0.5, E.out5)) }));
+      set(vRen, { o: tr(t, T.renV, T.renV + 0.15), s: lerp(1.9, 1, tr(t, T.renV, T.renV + 0.6, E.spring)) });
+
+      /* CSS that changes how it reads */
+      const cOut = tr(t, T.rep - 0.6, T.rep - 0.1, E.lin);
+      set(cssEl, { o: tr(t, T.css, T.css + 0.6) * (1 - cOut) });
+      set(cssRule, { o: tr(t, T.cssOn - 0.6, T.cssOn - 0.3), x: lerp(-30, 0, tr(t, T.cssOn - 0.6, T.cssOn, E.out5)) });
+      cssTitle.style.textTransform = t >= T.cssOn ? 'uppercase' : 'none';
+      set(cssTitle, { s: 1 + K.pulse(t, T.cssOn - 0.05, T.cssOn + 0.4, 0.1) * 0.02 });
+      set(vCss, { o: tr(t, T.cssOn + 0.5, T.cssOn + 0.65), s: lerp(1.9, 1, tr(t, T.cssOn + 0.5, T.cssOn + 1.1, E.spring)) });
+      also.forEach((a, i) => set(a, { o: tr(t, T.also + i * 0.18, T.also + i * 0.18 + 0.3), y: lerp(16, 0, tr(t, T.also + i * 0.18, T.also + i * 0.18 + 0.5, E.out5)) }));
+
+      /* the live report */
+      rep.show(t, T.rep, T.endIn - 0.3);
+      rep.cam(t, RK);
+
+      end.show(t, T.endIn);
+    },
+  });
+})();
+</script>
+</body>
+</html>
