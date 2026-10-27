@@ -1,0 +1,4 @@
+# Keep LF everywhere so file hashes in reports match on every OS; PNGs are binary.
+* text=auto eol=lf
+*.png binary
+*.ttf binary

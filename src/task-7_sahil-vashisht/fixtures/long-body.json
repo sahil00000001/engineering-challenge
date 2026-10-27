@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "content_id": "insight-long-body",
+  "synthetic": true,
+  "content": {
+    "brand": "atomity",
+    "title": "A new sovereign region changes where regulated workloads can run",
+    "body": "Fictional Provider A opened a sovereign cloud region in Frankfurt on 3 October 2026, with 42 managed services at launch and operations run under EU jurisdiction. The provider states that customer data, metadata and support access stay inside the European Union, and that the region is operated by a separate legal entity with EU-resident staff.\n\nTeams holding data under residency rules can now weigh this region against their current hosting at the next placement review. The comparison is not only about location: service coverage, latency to existing systems, exit terms and the cost of moving data all change which workloads are good candidates.\n\nThe announcement does not say when the remaining services in the provider's catalogue will reach the region, so plans that depend on them should treat availability as unconfirmed until it is published.",
+    "source_note": "Fictional Provider A press release, 3 Oct 2026. Synthetic test content, not real news."
+  },
+  "approval": {
+    "status": "approved",
+    "approved_by": "review-workflow (synthetic fixture)",
+    "approved_at": "2026-10-06T09:30:00Z",
+    "content_sha256": "6438a26d01bcc451928f77dea4c88a712aaa588a06b04078999962a6891eb331"
+  }
+}

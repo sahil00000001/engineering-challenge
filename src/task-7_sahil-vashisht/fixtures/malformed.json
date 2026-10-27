@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "content_id": "Insight Malformed!",
+  "synthetic": "yes",
+  "content": {
+    "brand": "atomity",
+    "title": 42,
+    "body": [
+      "not",
+      "a",
+      "string"
+    ],
+    "source_note": "Synthetic malformed input.",
+    "subtitle": "not a slot in this template"
+  }
+}

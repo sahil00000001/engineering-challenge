@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "content_id": "insight-html-script-input",
+  "synthetic": true,
+  "content": {
+    "brand": "atomity",
+    "title": "<script>alert(\"test\")</script> is shown as text, not run",
+    "body": "Every tag below is approved text and must appear literally: <img src=\"https://tracker.invalid/pixel.png\" onerror=\"alert(1)\"> <a href=\"javascript:alert(2)\">link</a> <style>body { display: none }</style>\n\nA slot cannot close its element or reach another one: </p><h1 onclick=\"alert(3)\">{{title}}</h1> &amp; &lt;b&gt;",
+    "source_note": "<link rel=\"stylesheet\" href=\"https://evil.invalid/x.css\"> Synthetic injection test, 6 Oct 2026."
+  },
+  "approval": {
+    "status": "approved",
+    "approved_by": "review-workflow (synthetic fixture)",
+    "approved_at": "2026-10-06T09:30:00Z",
+    "content_sha256": "36ec6951ae7d36e15a7f86ebf25f739379df9a1d9a497100ec0c3f9e8f6b6b90"
+  }
+}

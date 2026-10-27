@@ -1,0 +1,106 @@
+{
+  "report_version": "1.0",
+  "scope": "visual-validation",
+  "template": {
+    "id": "single-insight-v1",
+    "version": "1.0.0"
+  },
+  "content_id": "insight-missing-source-note",
+  "status": "fail",
+  "canvas": {
+    "expected": {
+      "width": 1200,
+      "height": 627
+    },
+    "actual": null
+  },
+  "checks": {
+    "input_contract": "pass",
+    "required_fields": "fail",
+    "assets": "pass",
+    "canvas": "skipped",
+    "content_present": "skipped",
+    "overflow": "skipped",
+    "approved_text_preserved": "skipped",
+    "safe_binding": "skipped"
+  },
+  "failures": [
+    {
+      "code": "MISSING_REQUIRED_FIELD",
+      "check": "required_fields",
+      "slot": "source_note",
+      "message": "Required field \"source_note\" is missing or blank",
+      "details": {
+        "field": "source_note",
+        "received": "absent"
+      }
+    }
+  ],
+  "layout": {},
+  "security": null,
+  "assets": [
+    {
+      "role": "template",
+      "path": "src/task-7_sahil-vashisht/template/single-insight-v1.html",
+      "exists": true,
+      "sha256": "a41036cb669ab6d201e858dfe1d4d75280c6b0f25dc3dbad1d5230b3bda2c565",
+      "loaded": null
+    },
+    {
+      "role": "template-stylesheet",
+      "path": "src/task-7_sahil-vashisht/template/single-insight-v1.css",
+      "exists": true,
+      "sha256": "5940aafef4ca17806ebd77020b6190f7ec5850514c743302d63a919026f840f3",
+      "loaded": null
+    },
+    {
+      "role": "design-stylesheet",
+      "path": "design/atomity.css",
+      "exists": true,
+      "sha256": "0c5f885729fb6999dee511c4de4c48a24cb67400902873d353e21c5b950d485e",
+      "loaded": null
+    },
+    {
+      "role": "logo",
+      "path": "design/atomity_logo.svg",
+      "exists": true,
+      "sha256": "64b3cca825385d29c3ca8c5d1813eb9adab401e179b664b6d9e9e27ecb470041",
+      "loaded": null
+    },
+    {
+      "role": "font",
+      "path": "design/fonts/GoogleSansFlex-VariableFont_GRAD,ROND,opsz,slnt,wdth,wght.ttf",
+      "exists": true,
+      "sha256": "c6d53424121196b81de816b8daccf200e285dd506df43766db3d7e8cdf06ee30",
+      "loaded": null
+    },
+    {
+      "role": "font",
+      "path": "design/fonts/GoogleSansCode-VariableFont_MONO,wght.ttf",
+      "exists": true,
+      "sha256": "613568cfb7ee42b08d9cb37c87219e32d9a9248cff391f9661b390c92fd9bfcd",
+      "loaded": null
+    },
+    {
+      "role": "font",
+      "path": "design/fonts/GowunBatang-Regular.ttf",
+      "exists": true,
+      "sha256": "8bc1faf7965c79cd23cc21bea5be0a0582ba6804d33f00e50f3bb27ed10965d0",
+      "loaded": null
+    }
+  ],
+  "inputs": {
+    "content_file": "src/task-7_sahil-vashisht/fixtures/missing-source-note.json",
+    "content_file_sha256": "6a72fdc2c93bed6f9f65c79e4ba938f164630b15e94016f6ce9dab1a2d153f90",
+    "approval_digest_recorded": "13f63a810a525410a2b1d75510ac6389e8e109353ef38916cfd87bb0c48652c7",
+    "approval_digest_computed": null,
+    "design_config_file": "src/task-7_sahil-vashisht/config/single-insight-v1.design.json",
+    "design_config_sha256": "8f3045155c05c3aee055dd37a4861d094965bc2d8175f0131a9d610c70c5ec9c"
+  },
+  "outputs": {
+    "png": null,
+    "png_sha256": null,
+    "html": null
+  },
+  "renderer": null
+}

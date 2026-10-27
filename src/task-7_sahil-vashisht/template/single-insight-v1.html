@@ -1,0 +1,47 @@
+<!doctype html>
+<!--
+  single-insight-v1: one reusable 1200x627 insight image.
+
+  Placeholders:
+    {{title}} {{body}} {{source_note}}  approved content, HTML-escaped and bound only as text
+    {{@name}}                           values the renderer derives from the design configuration
+
+  Each slot element holds exactly one placeholder with no surrounding whitespace, so the
+  rendered textContent can be compared byte-for-byte with the approved text.
+  Brand colours, fonts, radii and spacing come from atomity.css tokens. This file and
+  single-insight-v1.css hold no brand values of their own.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="{{@csp}}">
+  <title>{{title}}</title>
+  <link rel="stylesheet" href="../../../design/atomity.css">
+  <link rel="stylesheet" href="single-insight-v1.css">
+  <style>{{@config_css}}</style>
+</head>
+<body>
+  <article class="insight" data-canvas aria-labelledby="insight-title">
+    <div class="insight__content">
+      <div class="insight__region insight__region--title" data-region="title">
+        <h1 class="insight__title" id="insight-title" data-slot="title">{{title}}</h1>
+      </div>
+      <div class="insight__region insight__region--body" data-region="body">
+        <p class="insight__body" data-slot="body">{{body}}</p>
+      </div>
+      <footer class="insight__source">
+        <p class="eyebrow insight__source-label">{{@source_label}}</p>
+        <div class="insight__region insight__region--source-note" data-region="source_note">
+          <p class="insight__source-note" data-slot="source_note">{{source_note}}</p>
+        </div>
+      </footer>
+    </div>
+    <aside class="insight__brand surface-mint" data-region="brand" aria-label="Published by">
+      <div class="backdrop-grid" aria-hidden="true"></div>
+      <div class="insight__logo-plate">
+        <img class="insight__logo" data-slot="brand" src="{{@brand_logo_src}}" alt="{{@brand_name}}">
+      </div>
+    </aside>
+  </article>
+</body>
+</html>

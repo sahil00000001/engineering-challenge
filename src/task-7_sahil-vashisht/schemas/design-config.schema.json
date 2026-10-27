@@ -1,0 +1,535 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "template": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "html": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_][A-Za-z0-9_.,-]*(\\/[A-Za-z0-9_][A-Za-z0-9_.,-]*)*$"
+        },
+        "stylesheet": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_][A-Za-z0-9_.,-]*(\\/[A-Za-z0-9_][A-Za-z0-9_.,-]*)*$"
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "html",
+        "stylesheet"
+      ],
+      "additionalProperties": false
+    },
+    "canvas": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 4096
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 4096
+        },
+        "device_scale_factor": {
+          "anyOf": [
+            {
+              "type": "number",
+              "const": 1
+            },
+            {
+              "type": "number",
+              "const": 2
+            }
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "width",
+        "height",
+        "device_scale_factor"
+      ],
+      "additionalProperties": false
+    },
+    "design_foundation": {
+      "type": "object",
+      "properties": {
+        "stylesheet": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_][A-Za-z0-9_.,-]*(\\/[A-Za-z0-9_][A-Za-z0-9_.,-]*)*$"
+        },
+        "fonts": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "family": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9 ]+$"
+              },
+              "weight": {
+                "type": "integer",
+                "minimum": 100,
+                "maximum": 900
+              },
+              "style": {
+                "type": "string",
+                "enum": [
+                  "normal",
+                  "italic"
+                ]
+              },
+              "file": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_][A-Za-z0-9_.,-]*(\\/[A-Za-z0-9_][A-Za-z0-9_.,-]*)*$"
+              },
+              "used_for": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "family",
+              "weight",
+              "style",
+              "file",
+              "used_for"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "stylesheet",
+        "fonts"
+      ],
+      "additionalProperties": false
+    },
+    "brands": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z0-9][a-z0-9-]*$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "logo": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_][A-Za-z0-9_.,-]*(\\/[A-Za-z0-9_][A-Za-z0-9_.,-]*)*$"
+          }
+        },
+        "required": [
+          "name",
+          "logo"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "labels": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        }
+      },
+      "required": [
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "layout": {
+      "type": "object",
+      "properties": {
+        "brand_panel_width_px": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2000
+            },
+            "provenance": {
+              "type": "string",
+              "enum": [
+                "atomity.css",
+                "storybook",
+                "neutral"
+              ]
+            },
+            "note": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "provenance"
+          ],
+          "additionalProperties": false
+        },
+        "logo_height_px": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 400
+            },
+            "provenance": {
+              "type": "string",
+              "enum": [
+                "atomity.css",
+                "storybook",
+                "neutral"
+              ]
+            },
+            "note": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "provenance"
+          ],
+          "additionalProperties": false
+        },
+        "logo_clear_space_px": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 400
+            },
+            "provenance": {
+              "type": "string",
+              "enum": [
+                "atomity.css",
+                "storybook",
+                "neutral"
+              ]
+            },
+            "note": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "provenance"
+          ],
+          "additionalProperties": false
+        },
+        "title_font_size_px": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 400
+            },
+            "provenance": {
+              "type": "string",
+              "enum": [
+                "atomity.css",
+                "storybook",
+                "neutral"
+              ]
+            },
+            "note": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "provenance"
+          ],
+          "additionalProperties": false
+        },
+        "title_line_height_px": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 400
+            },
+            "provenance": {
+              "type": "string",
+              "enum": [
+                "atomity.css",
+                "storybook",
+                "neutral"
+              ]
+            },
+            "note": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "provenance"
+          ],
+          "additionalProperties": false
+        },
+        "title_max_lines": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 20
+            },
+            "provenance": {
+              "type": "string",
+              "enum": [
+                "atomity.css",
+                "storybook",
+                "neutral"
+              ]
+            },
+            "note": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "provenance"
+          ],
+          "additionalProperties": false
+        },
+        "body_font_size_px": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 400
+            },
+            "provenance": {
+              "type": "string",
+              "enum": [
+                "atomity.css",
+                "storybook",
+                "neutral"
+              ]
+            },
+            "note": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "provenance"
+          ],
+          "additionalProperties": false
+        },
+        "body_line_height_px": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 400
+            },
+            "provenance": {
+              "type": "string",
+              "enum": [
+                "atomity.css",
+                "storybook",
+                "neutral"
+              ]
+            },
+            "note": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "provenance"
+          ],
+          "additionalProperties": false
+        },
+        "source_note_font_size_px": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 400
+            },
+            "provenance": {
+              "type": "string",
+              "enum": [
+                "atomity.css",
+                "storybook",
+                "neutral"
+              ]
+            },
+            "note": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "provenance"
+          ],
+          "additionalProperties": false
+        },
+        "source_note_line_height_px": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 400
+            },
+            "provenance": {
+              "type": "string",
+              "enum": [
+                "atomity.css",
+                "storybook",
+                "neutral"
+              ]
+            },
+            "note": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "provenance"
+          ],
+          "additionalProperties": false
+        },
+        "source_note_max_lines": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 20
+            },
+            "provenance": {
+              "type": "string",
+              "enum": [
+                "atomity.css",
+                "storybook",
+                "neutral"
+              ]
+            },
+            "note": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "provenance"
+          ],
+          "additionalProperties": false
+        },
+        "label_font_size_px": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 400
+            },
+            "provenance": {
+              "type": "string",
+              "enum": [
+                "atomity.css",
+                "storybook",
+                "neutral"
+              ]
+            },
+            "note": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "provenance"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "brand_panel_width_px",
+        "logo_height_px",
+        "logo_clear_space_px",
+        "title_font_size_px",
+        "title_line_height_px",
+        "title_max_lines",
+        "body_font_size_px",
+        "body_line_height_px",
+        "source_note_font_size_px",
+        "source_note_line_height_px",
+        "source_note_max_lines",
+        "label_font_size_px"
+      ],
+      "additionalProperties": false
+    },
+    "validation": {
+      "type": "object",
+      "properties": {
+        "overflow_tolerance_px": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 4
+        },
+        "min_ink_ratio": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": [
+        "overflow_tolerance_px",
+        "min_ink_ratio"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "template",
+    "canvas",
+    "design_foundation",
+    "brands",
+    "labels",
+    "layout",
+    "validation"
+  ],
+  "additionalProperties": false
+}

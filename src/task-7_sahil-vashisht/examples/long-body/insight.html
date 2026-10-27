@@ -1,0 +1,52 @@
+<!doctype html>
+<!--
+  single-insight-v1: one reusable 1200x627 insight image.
+
+  Placeholders:
+    {{title}} {{body}} {{source_note}}  approved content, HTML-escaped and bound only as text
+    {{@name}}                           values the renderer derives from the design configuration
+
+  Each slot element holds exactly one placeholder with no surrounding whitespace, so the
+  rendered textContent can be compared byte-for-byte with the approved text.
+  Brand colours, fonts, radii and spacing come from atomity.css tokens. This file and
+  single-insight-v1.css hold no brand values of their own.
+-->
+<html lang="en">
+<head>
+  <base href="../../template/">
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src &#39;none&#39;; style-src &#39;self&#39; &#39;sha256-Zu+pbr70GIqDYLSqAKxRPdq1TQbw7bxuBQ741B7XWAw=&#39;; font-src &#39;self&#39;; img-src &#39;self&#39; data:; script-src &#39;none&#39;; object-src &#39;none&#39;; base-uri &#39;self&#39;; form-action &#39;none&#39;">
+  <title>A new sovereign region changes where regulated workloads can run</title>
+  <link rel="stylesheet" href="../../../design/atomity.css">
+  <link rel="stylesheet" href="single-insight-v1.css">
+  <style>:root{--insight-canvas-width:1200px;--insight-canvas-height:627px;--insight-brand-panel-width:300px;--insight-logo-height:32px;--insight-logo-clear-space:32px;--insight-title-size:46px;--insight-title-line-height:52px;--insight-title-max-lines:3;--insight-body-size:22px;--insight-body-line-height:34px;--insight-source-note-size:15px;--insight-source-note-line-height:22px;--insight-source-note-max-lines:2;--insight-label-size:13px}</style>
+</head>
+<body>
+  <article class="insight" data-canvas aria-labelledby="insight-title">
+    <div class="insight__content">
+      <div class="insight__region insight__region--title" data-region="title">
+        <h1 class="insight__title" id="insight-title" data-slot="title">A new sovereign region changes where regulated workloads can run</h1>
+      </div>
+      <div class="insight__region insight__region--body" data-region="body">
+        <p class="insight__body" data-slot="body">Fictional Provider A opened a sovereign cloud region in Frankfurt on 3 October 2026, with 42 managed services at launch and operations run under EU jurisdiction. The provider states that customer data, metadata and support access stay inside the European Union, and that the region is operated by a separate legal entity with EU-resident staff.
+
+Teams holding data under residency rules can now weigh this region against their current hosting at the next placement review. The comparison is not only about location: service coverage, latency to existing systems, exit terms and the cost of moving data all change which workloads are good candidates.
+
+The announcement does not say when the remaining services in the provider&#39;s catalogue will reach the region, so plans that depend on them should treat availability as unconfirmed until it is published.</p>
+      </div>
+      <footer class="insight__source">
+        <p class="eyebrow insight__source-label">Source</p>
+        <div class="insight__region insight__region--source-note" data-region="source_note">
+          <p class="insight__source-note" data-slot="source_note">Fictional Provider A press release, 3 Oct 2026. Synthetic test content, not real news.</p>
+        </div>
+      </footer>
+    </div>
+    <aside class="insight__brand surface-mint" data-region="brand" aria-label="Published by">
+      <div class="backdrop-grid" aria-hidden="true"></div>
+      <div class="insight__logo-plate">
+        <img class="insight__logo" data-slot="brand" src="../../../design/atomity_logo.svg" alt="Atomity">
+      </div>
+    </aside>
+  </article>
+</body>
+</html>

@@ -1,0 +1,123 @@
+{
+  "schema_version": "1.0",
+  "template": {
+    "id": "single-insight-v1",
+    "version": "1.0.0",
+    "html": "src/task-7_sahil-vashisht/template/single-insight-v1.html",
+    "stylesheet": "src/task-7_sahil-vashisht/template/single-insight-v1.css"
+  },
+  "canvas": {
+    "name": "single-insight-image",
+    "width": 1200,
+    "height": 627,
+    "device_scale_factor": 1
+  },
+  "design_foundation": {
+    "stylesheet": "design/atomity.css",
+    "fonts": [
+      {
+        "family": "Google Sans Flex",
+        "weight": 700,
+        "style": "normal",
+        "file": "design/fonts/GoogleSansFlex-VariableFont_GRAD,ROND,opsz,slnt,wdth,wght.ttf",
+        "used_for": "title"
+      },
+      {
+        "family": "Google Sans Flex",
+        "weight": 400,
+        "style": "normal",
+        "file": "design/fonts/GoogleSansFlex-VariableFont_GRAD,ROND,opsz,slnt,wdth,wght.ttf",
+        "used_for": "source note"
+      },
+      {
+        "family": "Google Sans Code",
+        "weight": 700,
+        "style": "normal",
+        "file": "design/fonts/GoogleSansCode-VariableFont_MONO,wght.ttf",
+        "used_for": "source label"
+      },
+      {
+        "family": "Gowun Batang",
+        "weight": 400,
+        "style": "normal",
+        "file": "design/fonts/GowunBatang-Regular.ttf",
+        "used_for": "body"
+      }
+    ]
+  },
+  "brands": {
+    "atomity": {
+      "name": "Atomity",
+      "logo": "design/atomity_logo.svg"
+    }
+  },
+  "labels": {
+    "source": "Source"
+  },
+  "layout": {
+    "brand_panel_width_px": {
+      "value": 300,
+      "provenance": "neutral",
+      "note": "Width of the mint brand panel. No panel width is supplied by the design foundation."
+    },
+    "logo_height_px": {
+      "value": 32,
+      "provenance": "storybook",
+      "note": "Wordmark display height used by every placement on the Storybook Brand Assets page (width stays auto)."
+    },
+    "logo_clear_space_px": {
+      "value": 32,
+      "provenance": "neutral",
+      "note": "No clear-space rule is supplied. One logo height on every side is a neutral placeholder, not an official Atomity value."
+    },
+    "title_font_size_px": {
+      "value": 46,
+      "provenance": "neutral",
+      "note": "atomity.css sizes headings for screens, not a 1200px social image. Weight 700 and -0.02em tracking follow the Storybook heading spec."
+    },
+    "title_line_height_px": {
+      "value": 52,
+      "provenance": "neutral",
+      "note": "Whole pixels so line counts are exact."
+    },
+    "title_max_lines": {
+      "value": 3,
+      "provenance": "neutral",
+      "note": "Longer titles fail validation with TITLE_OVERFLOW instead of shrinking or being cut."
+    },
+    "body_font_size_px": {
+      "value": 22,
+      "provenance": "neutral",
+      "note": "Set in --font-body (Gowun Batang), the serif Storybook reserves for editorial copy."
+    },
+    "body_line_height_px": {
+      "value": 34,
+      "provenance": "neutral",
+      "note": "About 1.55x, close to the 1.6 of .text-subtitle in atomity.css."
+    },
+    "source_note_font_size_px": {
+      "value": 15,
+      "provenance": "neutral",
+      "note": "Set in Google Sans Flex: Storybook says running copy should never be set in Code."
+    },
+    "source_note_line_height_px": {
+      "value": 22,
+      "provenance": "neutral",
+      "note": "Whole pixels so line counts are exact."
+    },
+    "source_note_max_lines": {
+      "value": 2,
+      "provenance": "neutral",
+      "note": "Longer source notes fail validation with SOURCE_NOTE_OVERFLOW."
+    },
+    "label_font_size_px": {
+      "value": 13,
+      "provenance": "storybook",
+      "note": "Storybook label scale: 13px, 700, caps, 0.1em, in Google Sans Code."
+    }
+  },
+  "validation": {
+    "overflow_tolerance_px": 1,
+    "min_ink_ratio": 0.004
+  }
+}

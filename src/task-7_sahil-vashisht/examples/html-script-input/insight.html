@@ -1,0 +1,50 @@
+<!doctype html>
+<!--
+  single-insight-v1: one reusable 1200x627 insight image.
+
+  Placeholders:
+    {{title}} {{body}} {{source_note}}  approved content, HTML-escaped and bound only as text
+    {{@name}}                           values the renderer derives from the design configuration
+
+  Each slot element holds exactly one placeholder with no surrounding whitespace, so the
+  rendered textContent can be compared byte-for-byte with the approved text.
+  Brand colours, fonts, radii and spacing come from atomity.css tokens. This file and
+  single-insight-v1.css hold no brand values of their own.
+-->
+<html lang="en">
+<head>
+  <base href="../../template/">
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src &#39;none&#39;; style-src &#39;self&#39; &#39;sha256-Zu+pbr70GIqDYLSqAKxRPdq1TQbw7bxuBQ741B7XWAw=&#39;; font-src &#39;self&#39;; img-src &#39;self&#39; data:; script-src &#39;none&#39;; object-src &#39;none&#39;; base-uri &#39;self&#39;; form-action &#39;none&#39;">
+  <title>&lt;script&gt;alert(&quot;test&quot;)&lt;/script&gt; is shown as text, not run</title>
+  <link rel="stylesheet" href="../../../design/atomity.css">
+  <link rel="stylesheet" href="single-insight-v1.css">
+  <style>:root{--insight-canvas-width:1200px;--insight-canvas-height:627px;--insight-brand-panel-width:300px;--insight-logo-height:32px;--insight-logo-clear-space:32px;--insight-title-size:46px;--insight-title-line-height:52px;--insight-title-max-lines:3;--insight-body-size:22px;--insight-body-line-height:34px;--insight-source-note-size:15px;--insight-source-note-line-height:22px;--insight-source-note-max-lines:2;--insight-label-size:13px}</style>
+</head>
+<body>
+  <article class="insight" data-canvas aria-labelledby="insight-title">
+    <div class="insight__content">
+      <div class="insight__region insight__region--title" data-region="title">
+        <h1 class="insight__title" id="insight-title" data-slot="title">&lt;script&gt;alert(&quot;test&quot;)&lt;/script&gt; is shown as text, not run</h1>
+      </div>
+      <div class="insight__region insight__region--body" data-region="body">
+        <p class="insight__body" data-slot="body">Every tag below is approved text and must appear literally: &lt;img src=&quot;https://tracker.invalid/pixel.png&quot; onerror=&quot;alert(1)&quot;&gt; &lt;a href=&quot;javascript:alert(2)&quot;&gt;link&lt;/a&gt; &lt;style&gt;body { display: none }&lt;/style&gt;
+
+A slot cannot close its element or reach another one: &lt;/p&gt;&lt;h1 onclick=&quot;alert(3)&quot;&gt;{{title}}&lt;/h1&gt; &amp;amp; &amp;lt;b&amp;gt;</p>
+      </div>
+      <footer class="insight__source">
+        <p class="eyebrow insight__source-label">Source</p>
+        <div class="insight__region insight__region--source-note" data-region="source_note">
+          <p class="insight__source-note" data-slot="source_note">&lt;link rel=&quot;stylesheet&quot; href=&quot;https://evil.invalid/x.css&quot;&gt; Synthetic injection test, 6 Oct 2026.</p>
+        </div>
+      </footer>
+    </div>
+    <aside class="insight__brand surface-mint" data-region="brand" aria-label="Published by">
+      <div class="backdrop-grid" aria-hidden="true"></div>
+      <div class="insight__logo-plate">
+        <img class="insight__logo" data-slot="brand" src="../../../design/atomity_logo.svg" alt="Atomity">
+      </div>
+    </aside>
+  </article>
+</body>
+</html>

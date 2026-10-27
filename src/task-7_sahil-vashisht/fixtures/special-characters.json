@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "content_id": "insight-special-characters",
+  "synthetic": true,
+  "content": {
+    "brand": "atomity",
+    "title": "Storage at €0.042/GB & “EU-only” support: what changes in Zürich",
+    "body": "Fictional Provider B lists 99.95% availability for its Zürich, Düsseldorf and Île-de-France regions, with 42\u00a0services in each.\n\nLiteral characters stay exact: < > & \"quotes\" 'apostrophes' \\back\\slash $& $1 {{body}} — © 2026.",
+    "source_note": "Fictional Provider B price list v2.1, 1 Oct 2026. Synthetic test content."
+  },
+  "approval": {
+    "status": "approved",
+    "approved_by": "review-workflow (synthetic fixture)",
+    "approved_at": "2026-10-06T09:30:00Z",
+    "content_sha256": "1f872a83f998d7f5080a0c79d38fc25830bebfc873eeaa91403546519d91c78f"
+  }
+}

@@ -1,0 +1,202 @@
+{
+  "report_version": "1.0",
+  "scope": "visual-validation",
+  "template": {
+    "id": "single-insight-v1",
+    "version": "1.0.0"
+  },
+  "content_id": "insight-long-title",
+  "status": "fail",
+  "canvas": {
+    "expected": {
+      "width": 1200,
+      "height": 627
+    },
+    "actual": {
+      "width": 1200,
+      "height": 627
+    }
+  },
+  "checks": {
+    "input_contract": "pass",
+    "required_fields": "pass",
+    "assets": "pass",
+    "canvas": "pass",
+    "content_present": "pass",
+    "overflow": "fail",
+    "approved_text_preserved": "pass",
+    "safe_binding": "pass"
+  },
+  "failures": [
+    {
+      "code": "TITLE_OVERFLOW",
+      "check": "overflow",
+      "slot": "title",
+      "message": "Title overflows its region: 156px taller than its region; 6 lines where at most 3 fit",
+      "details": {
+        "lines": 6,
+        "max_lines": 3,
+        "overflow_bottom_px": 156,
+        "overflow_right_px": 0
+      }
+    }
+  ],
+  "layout": {
+    "brand": {
+      "lines": null,
+      "max_lines": null,
+      "content_box": {
+        "x": 932,
+        "y": 563,
+        "width": 222,
+        "height": 32
+      },
+      "region_box": {
+        "x": 932,
+        "y": 32,
+        "width": 236,
+        "height": 563
+      },
+      "overflow_bottom_px": 0,
+      "overflow_right_px": -14,
+      "ink_ratio": 0.3946
+    },
+    "title": {
+      "lines": 6,
+      "max_lines": 3,
+      "content_box": {
+        "x": 48,
+        "y": 48,
+        "width": 804,
+        "height": 312
+      },
+      "region_box": {
+        "x": 48,
+        "y": 48,
+        "width": 804,
+        "height": 156
+      },
+      "overflow_bottom_px": 156,
+      "overflow_right_px": 0,
+      "ink_ratio": 0.2847
+    },
+    "body": {
+      "lines": 2,
+      "max_lines": null,
+      "content_box": {
+        "x": 48,
+        "y": 228,
+        "width": 804,
+        "height": 68
+      },
+      "region_box": {
+        "x": 48,
+        "y": 228,
+        "width": 804,
+        "height": 260.5
+      },
+      "overflow_bottom_px": -192.5,
+      "overflow_right_px": 0,
+      "ink_ratio": 0.3903
+    },
+    "source_note": {
+      "lines": 1,
+      "max_lines": 2,
+      "content_box": {
+        "x": 48,
+        "y": 557,
+        "width": 804,
+        "height": 22
+      },
+      "region_box": {
+        "x": 48,
+        "y": 557,
+        "width": 804,
+        "height": 22
+      },
+      "overflow_bottom_px": 0,
+      "overflow_right_px": 0,
+      "ink_ratio": 0.1284
+    }
+  },
+  "security": {
+    "page_javascript_enabled": false,
+    "blocked_requests": [],
+    "csp_violations": [],
+    "dialogs": 0,
+    "page_errors": []
+  },
+  "assets": [
+    {
+      "role": "template",
+      "path": "src/task-7_sahil-vashisht/template/single-insight-v1.html",
+      "exists": true,
+      "sha256": "a41036cb669ab6d201e858dfe1d4d75280c6b0f25dc3dbad1d5230b3bda2c565",
+      "loaded": true
+    },
+    {
+      "role": "template-stylesheet",
+      "path": "src/task-7_sahil-vashisht/template/single-insight-v1.css",
+      "exists": true,
+      "sha256": "5940aafef4ca17806ebd77020b6190f7ec5850514c743302d63a919026f840f3",
+      "loaded": true
+    },
+    {
+      "role": "design-stylesheet",
+      "path": "design/atomity.css",
+      "exists": true,
+      "sha256": "0c5f885729fb6999dee511c4de4c48a24cb67400902873d353e21c5b950d485e",
+      "loaded": true
+    },
+    {
+      "role": "logo",
+      "path": "design/atomity_logo.svg",
+      "exists": true,
+      "sha256": "64b3cca825385d29c3ca8c5d1813eb9adab401e179b664b6d9e9e27ecb470041",
+      "loaded": true
+    },
+    {
+      "role": "font",
+      "path": "design/fonts/GoogleSansFlex-VariableFont_GRAD,ROND,opsz,slnt,wdth,wght.ttf",
+      "exists": true,
+      "sha256": "c6d53424121196b81de816b8daccf200e285dd506df43766db3d7e8cdf06ee30",
+      "loaded": true
+    },
+    {
+      "role": "font",
+      "path": "design/fonts/GoogleSansCode-VariableFont_MONO,wght.ttf",
+      "exists": true,
+      "sha256": "613568cfb7ee42b08d9cb37c87219e32d9a9248cff391f9661b390c92fd9bfcd",
+      "loaded": true
+    },
+    {
+      "role": "font",
+      "path": "design/fonts/GowunBatang-Regular.ttf",
+      "exists": true,
+      "sha256": "8bc1faf7965c79cd23cc21bea5be0a0582ba6804d33f00e50f3bb27ed10965d0",
+      "loaded": true
+    }
+  ],
+  "inputs": {
+    "content_file": "src/task-7_sahil-vashisht/fixtures/long-title.json",
+    "content_file_sha256": "9788e9342239fb6fe01a059b2876beacaa46fb371bd34a75e8a59ff7d2b67a22",
+    "approval_digest_recorded": "c4317c09eeb174c24209bc05d398c480d47f64c2d1ae91025e867dfe7626cf4f",
+    "approval_digest_computed": "c4317c09eeb174c24209bc05d398c480d47f64c2d1ae91025e867dfe7626cf4f",
+    "design_config_file": "src/task-7_sahil-vashisht/config/single-insight-v1.design.json",
+    "design_config_sha256": "8f3045155c05c3aee055dd37a4861d094965bc2d8175f0131a9d610c70c5ec9c"
+  },
+  "outputs": {
+    "png": "insight.failed.png",
+    "png_sha256": "07683a4450b2d2690deeb9dd17631c5bd0a8c0c97892b0003e82808353c9b72c",
+    "html": "insight.html"
+  },
+  "renderer": {
+    "engine": "chromium",
+    "browser_version": "156.0.8078.4",
+    "viewport": {
+      "width": 1200,
+      "height": 627
+    },
+    "device_scale_factor": 1
+  }
+}

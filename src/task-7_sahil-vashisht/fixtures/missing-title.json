@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "content_id": "insight-missing-title",
+  "synthetic": true,
+  "content": {
+    "brand": "atomity",
+    "title": "",
+    "body": "Fictional Provider A opened a sovereign cloud region in Frankfurt on 3 October 2026, with 42 managed services at launch and operations run under EU jurisdiction.\n\nTeams holding data under residency rules can now weigh this region against their current hosting at the next placement review.",
+    "source_note": "Fictional Provider A press release, 3 Oct 2026. Synthetic test content, not real news."
+  },
+  "approval": {
+    "status": "approved",
+    "approved_by": "review-workflow (synthetic fixture)",
+    "approved_at": "2026-10-06T09:30:00Z",
+    "content_sha256": "13f63a810a525410a2b1d75510ac6389e8e109353ef38916cfd87bb0c48652c7"
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "content_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{0,63}$"
+    },
+    "synthetic": {
+      "type": "boolean"
+    },
+    "content": {
+      "type": "object",
+      "properties": {
+        "brand": {
+          "anyOf": [
+            {
+              "type": "string",
+              "description": "Approved text, rendered exactly. Line breaks (\\n) are kept. Other control characters, bidirectional controls, lone surrogates and runs of 4+ combining marks are rejected because the displayed text could not match the approved text."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string",
+              "description": "Approved text, rendered exactly. Line breaks (\\n) are kept. Other control characters, bidirectional controls, lone surrogates and runs of 4+ combining marks are rejected because the displayed text could not match the approved text."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "body": {
+          "anyOf": [
+            {
+              "type": "string",
+              "description": "Approved text, rendered exactly. Line breaks (\\n) are kept. Other control characters, bidirectional controls, lone surrogates and runs of 4+ combining marks are rejected because the displayed text could not match the approved text."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_note": {
+          "anyOf": [
+            {
+              "type": "string",
+              "description": "Approved text, rendered exactly. Line breaks (\\n) are kept. Other control characters, bidirectional controls, lone surrogates and runs of 4+ combining marks are rejected because the displayed text could not match the approved text."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "approval": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "const": "approved"
+        },
+        "approved_by": {
+          "type": "string",
+          "minLength": 1
+        },
+        "approved_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "status",
+        "approved_by",
+        "approved_at",
+        "content_sha256"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "content_id",
+    "synthetic",
+    "content",
+    "approval"
+  ],
+  "additionalProperties": false
+}

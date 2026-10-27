@@ -1,0 +1,128 @@
+/*
+  single-insight-v1: layout only.
+
+  Every colour, font family and spacing value here is an atomity.css token, or a fraction
+  of one. Canvas size, type scale, line limits and logo sizing come from the design
+  configuration, which the renderer injects as --insight-* custom properties.
+
+  This file never hides overflow. Each slot keeps its natural height inside a bounded
+  region and the validator compares the two. Nothing is truncated with an ellipsis,
+  line-clamped, scaled down or clipped to make text fit.
+*/
+
+html,
+body {
+  width: var(--insight-canvas-width);
+  height: var(--insight-canvas-height);
+  margin: 0;
+  background: var(--surface-page);
+}
+
+.insight {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--insight-brand-panel-width);
+  width: var(--insight-canvas-width);
+  height: var(--insight-canvas-height);
+  color: var(--text-primary);
+  background: var(--surface-page);
+}
+
+/* ── Content column: title, body, source ── */
+
+.insight__content {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  row-gap: calc(var(--space-section-sm) / 2);
+  min-width: 0;
+  min-height: 0;
+  padding: var(--space-section-sm);
+}
+
+.insight__region {
+  min-width: 0;
+  min-height: 0;
+}
+
+/* Bounded regions. The body region gets whatever the 1fr row leaves. */
+.insight__region--title {
+  max-height: calc(var(--insight-title-line-height) * var(--insight-title-max-lines));
+}
+
+.insight__region--source-note {
+  max-height: calc(var(--insight-source-note-line-height) * var(--insight-source-note-max-lines));
+}
+
+/* Shared rules for the three text slots. pre-line keeps approved line breaks;
+   break-word lets long URLs wrap instead of running out of the region sideways. */
+.insight__title,
+.insight__body,
+.insight__source-note {
+  margin: 0;
+  white-space: pre-line;
+  overflow-wrap: break-word;
+  text-transform: none;
+  hyphens: manual;
+}
+
+.insight__title {
+  font-family: var(--font-title);
+  font-size: var(--insight-title-size);
+  font-weight: 700;
+  line-height: var(--insight-title-line-height);
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.insight__body {
+  font-family: var(--font-body);
+  font-size: var(--insight-body-size);
+  font-weight: 400;
+  line-height: var(--insight-body-line-height);
+  color: var(--atomity-gray-700);
+}
+
+.insight__source {
+  padding-top: calc(var(--space-section-sm) / 3);
+  border-top: 1px solid var(--border-light);
+}
+
+/* .eyebrow from atomity.css (Code caps with the mint-dark rule), at the Storybook label size. */
+.insight__source-label {
+  margin: 0 0 calc(var(--space-section-sm) / 6);
+  font-size: var(--insight-label-size);
+}
+
+.insight__source-note {
+  font-family: var(--font-display);
+  font-size: var(--insight-source-note-size);
+  font-weight: 400;
+  line-height: var(--insight-source-note-line-height);
+  color: var(--text-secondary);
+}
+
+/* ── Brand panel: ink wordmark on mint, the pairing Storybook documents at 13:1 ── */
+
+.insight__brand {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-width: 0;
+}
+
+/* The plate's padding is the logo clear space, kept free of the grid texture
+   (Storybook: the grid never runs behind brand marks or text). */
+.insight__logo-plate {
+  position: relative;
+  z-index: var(--z-raised);
+  padding: var(--insight-logo-clear-space);
+  background-color: inherit;
+}
+
+/* Storybook: set a height and width: auto; never stretch the wordmark. atomity.css caps
+   images at max-width: 100%, which would squash it in a narrow panel, so that cap is
+   lifted here. A logo that does not fit is then reported, not distorted. */
+.insight__logo {
+  width: auto;
+  height: var(--insight-logo-height);
+  max-width: none;
+}

@@ -1,0 +1,194 @@
+[
+  {
+    "fixture": "normal",
+    "purpose": "Normal approved content renders and passes.",
+    "content_id": "insight-normal",
+    "status": "pass",
+    "checks": {
+      "input_contract": "pass",
+      "required_fields": "pass",
+      "assets": "pass",
+      "canvas": "pass",
+      "content_present": "pass",
+      "overflow": "pass",
+      "approved_text_preserved": "pass",
+      "safe_binding": "pass"
+    },
+    "failure_codes": [],
+    "png": "normal/insight.png",
+    "html": "normal/insight.html",
+    "report": "normal/report.json"
+  },
+  {
+    "fixture": "special-characters",
+    "purpose": "Quotes, ampersands, currency, accents, a no-break space, `$&` and `{{body}}` survive byte for byte.",
+    "content_id": "insight-special-characters",
+    "status": "pass",
+    "checks": {
+      "input_contract": "pass",
+      "required_fields": "pass",
+      "assets": "pass",
+      "canvas": "pass",
+      "content_present": "pass",
+      "overflow": "pass",
+      "approved_text_preserved": "pass",
+      "safe_binding": "pass"
+    },
+    "failure_codes": [],
+    "png": "special-characters/insight.png",
+    "html": "special-characters/insight.html",
+    "report": "special-characters/report.json"
+  },
+  {
+    "fixture": "html-script-input",
+    "purpose": "Script and HTML-like text is shown literally. Nothing executes and nothing is requested.",
+    "content_id": "insight-html-script-input",
+    "status": "pass",
+    "checks": {
+      "input_contract": "pass",
+      "required_fields": "pass",
+      "assets": "pass",
+      "canvas": "pass",
+      "content_present": "pass",
+      "overflow": "pass",
+      "approved_text_preserved": "pass",
+      "safe_binding": "pass"
+    },
+    "failure_codes": [],
+    "png": "html-script-input/insight.png",
+    "html": "html-script-input/insight.html",
+    "report": "html-script-input/report.json"
+  },
+  {
+    "fixture": "long-title",
+    "purpose": "A title longer than three lines is reported as `TITLE_OVERFLOW`.",
+    "content_id": "insight-long-title",
+    "status": "fail",
+    "checks": {
+      "input_contract": "pass",
+      "required_fields": "pass",
+      "assets": "pass",
+      "canvas": "pass",
+      "content_present": "pass",
+      "overflow": "fail",
+      "approved_text_preserved": "pass",
+      "safe_binding": "pass"
+    },
+    "failure_codes": [
+      "TITLE_OVERFLOW"
+    ],
+    "png": "long-title/insight.failed.png",
+    "html": "long-title/insight.html",
+    "report": "long-title/report.json"
+  },
+  {
+    "fixture": "long-body",
+    "purpose": "A body taller than its region is reported as `BODY_OVERFLOW`. It is not clipped.",
+    "content_id": "insight-long-body",
+    "status": "fail",
+    "checks": {
+      "input_contract": "pass",
+      "required_fields": "pass",
+      "assets": "pass",
+      "canvas": "pass",
+      "content_present": "pass",
+      "overflow": "fail",
+      "approved_text_preserved": "pass",
+      "safe_binding": "pass"
+    },
+    "failure_codes": [
+      "BODY_OVERFLOW"
+    ],
+    "png": "long-body/insight.failed.png",
+    "html": "long-body/insight.html",
+    "report": "long-body/report.json"
+  },
+  {
+    "fixture": "missing-title",
+    "purpose": "An empty title is a predictable `MISSING_REQUIRED_FIELD`. Nothing is rendered.",
+    "content_id": "insight-missing-title",
+    "status": "fail",
+    "checks": {
+      "input_contract": "pass",
+      "required_fields": "fail",
+      "assets": "pass",
+      "canvas": "skipped",
+      "content_present": "skipped",
+      "overflow": "skipped",
+      "approved_text_preserved": "skipped",
+      "safe_binding": "skipped"
+    },
+    "failure_codes": [
+      "MISSING_REQUIRED_FIELD"
+    ],
+    "png": null,
+    "html": null,
+    "report": "missing-title/report.json"
+  },
+  {
+    "fixture": "missing-source-note",
+    "purpose": "An absent source note is a predictable `MISSING_REQUIRED_FIELD`. Nothing is rendered.",
+    "content_id": "insight-missing-source-note",
+    "status": "fail",
+    "checks": {
+      "input_contract": "pass",
+      "required_fields": "fail",
+      "assets": "pass",
+      "canvas": "skipped",
+      "content_present": "skipped",
+      "overflow": "skipped",
+      "approved_text_preserved": "skipped",
+      "safe_binding": "skipped"
+    },
+    "failure_codes": [
+      "MISSING_REQUIRED_FIELD"
+    ],
+    "png": null,
+    "html": null,
+    "report": "missing-source-note/report.json"
+  },
+  {
+    "fixture": "changed-after-approval",
+    "purpose": "A body edited after approval (42 changed to 47) fails `APPROVAL_DIGEST_MISMATCH`. Nothing is rendered.",
+    "content_id": "insight-changed-after-approval",
+    "status": "fail",
+    "checks": {
+      "input_contract": "pass",
+      "required_fields": "pass",
+      "assets": "pass",
+      "canvas": "skipped",
+      "content_present": "skipped",
+      "overflow": "skipped",
+      "approved_text_preserved": "fail",
+      "safe_binding": "skipped"
+    },
+    "failure_codes": [
+      "APPROVAL_DIGEST_MISMATCH"
+    ],
+    "png": null,
+    "html": null,
+    "report": "changed-after-approval/report.json"
+  },
+  {
+    "fixture": "malformed",
+    "purpose": "Wrong types, unknown fields and a missing approval record fail `INPUT_INVALID`.",
+    "content_id": null,
+    "status": "fail",
+    "checks": {
+      "input_contract": "fail",
+      "required_fields": "skipped",
+      "assets": "pass",
+      "canvas": "skipped",
+      "content_present": "skipped",
+      "overflow": "skipped",
+      "approved_text_preserved": "skipped",
+      "safe_binding": "skipped"
+    },
+    "failure_codes": [
+      "INPUT_INVALID"
+    ],
+    "png": null,
+    "html": null,
+    "report": "malformed/report.json"
+  }
+]
